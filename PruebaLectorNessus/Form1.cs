@@ -25,6 +25,8 @@ namespace PruebaLectorNessus
 
         const string REPORT_HOST_TAG = "<ReportHost";
 
+        const string HOST_PROPERTIES_END_TAG = "</HostProperties>";
+
         // ----------------------------------------------------
         // Atributos
         // ----------------------------------------------------
@@ -86,18 +88,31 @@ namespace PruebaLectorNessus
                 if (lineas[numLinea].Contains(REPORT_HOST_TAG))
                 {
                     string hostname = "";
+                    string hostEnd = "";
 
-                    //Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
+
                     // Obtiene el nombre del host.
-                    hostname = Regex.Split(lineas[numLinea], "name=\"")[1];
+                    hostname = Regex.Split(lineas[numLinea], "name=\"")[1].Split('"')[0]; //<ReportHost name="10.1.4.180"><HostProperties>
                     Console.WriteLine("Linea: " + numLinea + " hostname:" + hostname);
+                    numLinea ++;
 
-                    // while ! </<HostProperties>
-                        // if tag name leer la linea.
-                            // Leer las siguientes lineas con un while (incluyendo la actual) si tiene </tag> salir del ciclo con break
+                    // Leer las propiedades del host
+                    while (!lineas[numLinea].Contains(HOST_PROPERTIES_END_TAG))
+                    {               
+                        if(lineas[numLinea].Contains("<tag name=\"HOST_END\""))
+                        {
+                            Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
+                        }
+                        numLinea ++;
+                    }
+                    Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
+                    // if tag name leer la linea.
+                    // Leer las siguientes lineas con un while (incluyendo la actual) si tiene </tag> salir del ciclo con break
+                    // Console.WriteLine("Linea: " + numLinea + " "+ lineas[numLinea]);
                 }
                 numLinea++;
             }
+            Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
         }
     }
 }
