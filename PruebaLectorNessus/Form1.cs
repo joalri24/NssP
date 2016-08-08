@@ -27,6 +27,10 @@ namespace PruebaLectorNessus
 
         const string HOST_PROPERTIES_END_TAG = "</HostProperties>";
 
+        const string HOST_END_TAG = "<tag name=\"HOST_END\">";
+
+        const string END_TAG = "</";
+
         // ----------------------------------------------------
         // Atributos
         // ----------------------------------------------------
@@ -92,16 +96,20 @@ namespace PruebaLectorNessus
 
 
                     // Obtiene el nombre del host.
-                    hostname = Regex.Split(lineas[numLinea], "name=\"")[1].Split('"')[0]; //<ReportHost name="10.1.4.180"><HostProperties>
-                    Console.WriteLine("Linea: " + numLinea + " hostname:" + hostname);
+                    hostname = Regex.Split(lineas[numLinea], "name=\"")[1].Split('"')[0];  //<ReportHost name="10.1.4.180"><HostProperties>
+                    Console.WriteLine("Linea: " + numLinea + " --- hostname:" + hostname + " ---");
                     numLinea ++;
 
                     // Leer las propiedades del host
                     while (!lineas[numLinea].Contains(HOST_PROPERTIES_END_TAG))
-                    {               
-                        if(lineas[numLinea].Contains("<tag name=\"HOST_END\""))
+                    {
+                        // Obtener el HOST_END
+                        if (lineas[numLinea].Contains(HOST_END_TAG)) 
                         {
-                            Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
+                            // <tag name="HOST_END">Thu Jul 28 14:46:10 2016</tag>
+                            hostEnd = Regex.Split(lineas[numLinea], HOST_END_TAG)[1];
+                            hostEnd = Regex.Split(hostEnd , END_TAG)[0];
+                            Console.WriteLine("Linea: " + numLinea + " HOST_END: " + hostEnd);
                         }
                         numLinea ++;
                     }
