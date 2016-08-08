@@ -20,6 +20,11 @@ namespace PruebaLectorNessus
         // ----------------------------------------------------
 
         const string REPORT_NAME_TAG = "<Report name";
+
+        const string REPORT_END_TAG = "</Report>";
+
+        const string REPORT_HOST_TAG = "<ReportHost";
+
         // ----------------------------------------------------
         // Atributos
         // ----------------------------------------------------
@@ -75,18 +80,15 @@ namespace PruebaLectorNessus
 
 
             // Iterar hasta el final del reporte. Mientrás la línea no contenga "</Report":
-            while (!lineas[numLinea].Contains("</Report>"))
+            while (!lineas[numLinea].Contains(REPORT_END_TAG))
             {
                 // Cuando encuentra un ReportHost, lee su información.
-                if (true)
+                if (lineas[numLinea].Contains(REPORT_HOST_TAG))
                 {
-                    //  TODO
+                    Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
                 }
                 numLinea++;
             }
-            //
-            Console.WriteLine("Linea: "+ numLinea+" "+ lineas[numLinea]);
-
         }
     }
 }
