@@ -29,6 +29,10 @@ namespace PruebaLectorNessus
 
         const string HOST_END_TAG = "<tag name=\"HOST_END\">";
 
+        const string HOST_START_TAG = "<tag name=\"HOST_START\">";
+
+        const string HOST_OS_TAG = "<tag name=\"operating-system\">";
+
         const string END_TAG = "</";
 
         // ----------------------------------------------------
@@ -85,7 +89,7 @@ namespace PruebaLectorNessus
             Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
 
 
-            // Iterar hasta el final del reporte. Mientrás la línea no contenga "</Report":
+            // Iterar hasta el final del reporte: mientras la línea no contenga "</Report>":
             while (!lineas[numLinea].Contains(REPORT_END_TAG))
             {
                 // Cuando encuentra un ReportHost, lee su información.
@@ -93,6 +97,7 @@ namespace PruebaLectorNessus
                 {
                     string hostname = "";
                     string hostEnd = "";
+                    string hostStart = "";
 
 
                     // Obtiene el nombre del host.
@@ -111,6 +116,41 @@ namespace PruebaLectorNessus
                             hostEnd = Regex.Split(hostEnd , END_TAG)[0];
                             Console.WriteLine("Linea: " + numLinea + " HOST_END: " + hostEnd);
                         }
+
+                        // Obtener el HOST_START
+                        if (lineas[numLinea].Contains(HOST_START_TAG))
+                        {
+                            // <tag name="HOST_START">Thu Jul 28 14:46:10 2016</tag>
+                            hostStart = Regex.Split(lineas[numLinea], HOST_START_TAG)[1];
+                            hostStart = Regex.Split(hostStart, END_TAG)[0];
+                            Console.WriteLine("Linea: " + numLinea + " HOST_START: " + hostStart);
+                        }
+
+                        /** Obtiene el sistema operativo.
+
+                            Eje 1:
+                            <tag name="operating-system">AIX 4.3.2
+                            AIX 5.2
+                            CatalystOS 6.3
+                            VAX / VMS 7.1 </ tag > 
+
+                            Eje 2:
+                            <tag name="operating-system">RICOH Printer</tag>
+                        */
+                        if (lineas[numLinea].Contains(HOST_OS_TAG))
+                        {
+                            while(true)  // Recorre todas las líneas del campo
+                            {
+                                Console.WriteLine("Linea: " + numLinea + " OS: " + lineas[numLinea]);
+                                if (lineas[numLinea].Contains(END_TAG)) // Termina el ciclo cuando encuentra el tag de cierre: "</"
+                                {
+                                    // TODO extraer la información.
+                                    break;
+                                }
+
+                                numLinea++;
+                            }
+                        }
                         numLinea ++;
                     }
                     Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
@@ -121,6 +161,8 @@ namespace PruebaLectorNessus
                 numLinea++;
             }
             Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
+            Console.WriteLine("*** Fin *** ");
+            
         }
     }
 }
