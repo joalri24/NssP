@@ -85,7 +85,16 @@ namespace PruebaLectorNessus
                 // Cuando encuentra un ReportHost, lee su información.
                 if (lineas[numLinea].Contains(REPORT_HOST_TAG))
                 {
-                    Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
+                    string hostname = "";
+
+                    //Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
+                    // Obtiene el nombre del host.
+                    hostname = Regex.Split(lineas[numLinea], "name=\"")[1];
+                    Console.WriteLine("Linea: " + numLinea + " hostname:" + hostname);
+
+                    // while ! </<HostProperties>
+                        // if tag name leer la linea.
+                            // Leer las siguientes lineas con un while (incluyendo la actual) si tiene </tag> salir del ciclo con break
                 }
                 numLinea++;
             }

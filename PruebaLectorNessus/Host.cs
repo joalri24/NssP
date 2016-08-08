@@ -15,9 +15,9 @@ namespace PruebaLectorNessus
         // ----------------------------------------------------
         // Constructor
         // ----------------------------------------------------
-        public Host()
+        public Host(string nombreP)
         {
-            //TODO nombre = nombreP;
+            nombre = nombreP;
         }
         // ----------------------------------------------------
         // Métodos
