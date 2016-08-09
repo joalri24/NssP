@@ -98,6 +98,7 @@ namespace PruebaLectorNessus
                     string hostname = "";
                     string hostEnd = "";
                     string hostStart = "";
+                    string operativeSystem = "";
 
 
                     // Obtiene el nombre del host.
@@ -132,28 +133,55 @@ namespace PruebaLectorNessus
                             <tag name="operating-system">AIX 4.3.2
                             AIX 5.2
                             CatalystOS 6.3
-                            VAX / VMS 7.1 </ tag > 
+                            VAX / VMS 7.1 </tag > 
 
                             Eje 2:
-                            <tag name="operating-system">RICOH Printer</tag>
-                        */
+                            <tag name="operating-system">RICOH Printer</tag> */
                         if (lineas[numLinea].Contains(HOST_OS_TAG))
                         {
                             while(true)  // Recorre todas las líneas del campo
                             {
-                                Console.WriteLine("Linea: " + numLinea + " OS: " + lineas[numLinea]);
-                                if (lineas[numLinea].Contains(END_TAG)) // Termina el ciclo cuando encuentra el tag de cierre: "</"
+                                string os = "";
+                                // Existen diferentes casos. 
+                                // 1. El tag de inicio y el tag de final están en la misma línea
+                                // 2. Únicamente el tag de inicio está en la línea.
+                                // 3. Únicamente el tag de final está en la línea.
+                                // 4. La línea no tiene tags.
+
+                                // 1. Eje: <tag name="operating-system">RICOH Printer</tag>
+                                if (lineas[numLinea].Contains(HOST_OS_TAG) && lineas[numLinea].Contains(END_TAG))
                                 {
-                                    // TODO extraer la información.
-                                    break;
+                                    os = Regex.Split(lineas[numLinea], HOST_OS_TAG)[1];
+                                    os = Regex.Split(os, END_TAG)[0];
+                                    operativeSystem = operativeSystem + " " + os;
+                                    break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
                                 }
+
+                                // 3. Eje: VAX / VMS 7.1 </tag>
+                                else if (lineas[numLinea].Contains(END_TAG)) 
+                                {
+                                    os = Regex.Split(lineas[numLinea], END_TAG)[0];
+                                    operativeSystem = operativeSystem + " " + os;
+                                    break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
+                                }
+
+                                // 2. Eje: <tag name="operating-system">AIX 4.3.2
+                                else if (lineas[numLinea].Contains(HOST_OS_TAG))
+                                {
+                                    os = Regex.Split(lineas[numLinea], HOST_OS_TAG)[1];
+                                    operativeSystem = operativeSystem + " " + os;
+                                }
+
+                                // 4. Eje: AIX 5.2
+                                else
+                                    operativeSystem = operativeSystem + " " + lineas[numLinea];                                
 
                                 numLinea++;
                             }
                         }
                         numLinea ++;
                     }
-                    Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
+                    Console.WriteLine("Linea: " + numLinea + " OS: " + operativeSystem);
                     // if tag name leer la linea.
                     // Leer las siguientes lineas con un while (incluyendo la actual) si tiene </tag> salir del ciclo con break
                     // Console.WriteLine("Linea: " + numLinea + " "+ lineas[numLinea]);
