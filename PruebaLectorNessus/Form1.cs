@@ -33,6 +33,8 @@ namespace PruebaLectorNessus
 
         const string HOST_OS_TAG = "<tag name=\"operating-system\">";
 
+        const string HOST_MAC_TAG = "<tag name=\"mac-address\">";
+
         const string END_TAG = "</";
 
         // ----------------------------------------------------
@@ -99,11 +101,11 @@ namespace PruebaLectorNessus
                     string hostEnd = "";
                     string hostStart = "";
                     string operativeSystem = "";
+                    string mac = "";
 
 
                     // Obtiene el nombre del host.
-                    hostname = Regex.Split(lineas[numLinea], "name=\"")[1].Split('"')[0];  //<ReportHost name="10.1.4.180"><HostProperties>
-                    Console.WriteLine("Linea: " + numLinea + " --- hostname:" + hostname + " ---");
+                    hostname = Regex.Split(lineas[numLinea], "name=\"")[1].Split('"')[0];  //<ReportHost name="10.1.4.180"><HostProperties>                    
                     numLinea ++;
 
                     // Leer las propiedades del host
@@ -114,8 +116,7 @@ namespace PruebaLectorNessus
                         {
                             // <tag name="HOST_END">Thu Jul 28 14:46:10 2016</tag>
                             hostEnd = Regex.Split(lineas[numLinea], HOST_END_TAG)[1];
-                            hostEnd = Regex.Split(hostEnd , END_TAG)[0];
-                            Console.WriteLine("Linea: " + numLinea + " HOST_END: " + hostEnd);
+                            hostEnd = Regex.Split(hostEnd , END_TAG)[0];                           
                         }
 
                         // Obtener el HOST_START
@@ -124,19 +125,19 @@ namespace PruebaLectorNessus
                             // <tag name="HOST_START">Thu Jul 28 14:46:10 2016</tag>
                             hostStart = Regex.Split(lineas[numLinea], HOST_START_TAG)[1];
                             hostStart = Regex.Split(hostStart, END_TAG)[0];
-                            Console.WriteLine("Linea: " + numLinea + " HOST_START: " + hostStart);
                         }
 
                         /** Obtiene el sistema operativo.
-
-                            Eje 1:
-                            <tag name="operating-system">AIX 4.3.2
-                            AIX 5.2
-                            CatalystOS 6.3
-                            VAX / VMS 7.1 </tag > 
-
-                            Eje 2:
-                            <tag name="operating-system">RICOH Printer</tag> */
+                         *
+                         *   Eje 1:
+                         *   <tag name="operating-system">AIX 4.3.2
+                         *   AIX 5.2
+                         *   CatalystOS 6.3
+                         *   VAX / VMS 7.1 </tag > 
+                         *
+                         *   Eje 2:
+                         *   <tag name="operating-system">RICOH Printer</tag> 
+                         */
                         if (lineas[numLinea].Contains(HOST_OS_TAG))
                         {
                             while(true)  // Recorre todas las líneas del campo
@@ -153,7 +154,7 @@ namespace PruebaLectorNessus
                                 {
                                     os = Regex.Split(lineas[numLinea], HOST_OS_TAG)[1];
                                     os = Regex.Split(os, END_TAG)[0];
-                                    operativeSystem = operativeSystem + " " + os;
+                                    operativeSystem = operativeSystem + os;
                                     break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
                                 }
 
@@ -169,7 +170,7 @@ namespace PruebaLectorNessus
                                 else if (lineas[numLinea].Contains(HOST_OS_TAG))
                                 {
                                     os = Regex.Split(lineas[numLinea], HOST_OS_TAG)[1];
-                                    operativeSystem = operativeSystem + " " + os;
+                                    operativeSystem = operativeSystem +  os;
                                 }
 
                                 // 4. Eje: AIX 5.2
@@ -179,11 +180,72 @@ namespace PruebaLectorNessus
                                 numLinea++;
                             }
                         }
-                        numLinea ++;
+
+                        /** Obtiene la dirección mac.
+                         *
+                         *   Eje 1:
+                         *   <tag name="mac-address">00:0c:29:71:87:10</tag>
+                         *
+                         *   Eje 2:
+                         *   <tag name="mac-address">00:00:00:00:00:00
+                         *   00:22:57:b4:91:75
+                         *   74820 00:0e:11:14:e9:2e</tag> 
+                         */
+                        if (lineas[numLinea].Contains(HOST_MAC_TAG))
+                        {
+
+                            while (true) // Recorre todas las líneas del campo
+                            {
+                                // Existen diferentes casos. 
+                                // 1. El tag de inicio y el tag de final están en la misma línea
+                                // 2. Únicamente el tag de final está en la línea.
+                                // 3. Únicamente el tag de inicio está en la línea.
+                                // 4. La línea no tiene tags.
+                                string temp = "";
+
+                                // 1. Eje: <tag name="mac-address">00:0c:29:71:87:10</tag>
+                                if (lineas[numLinea].Contains(HOST_MAC_TAG) && lineas[numLinea].Contains(END_TAG))
+                                {
+                                    temp = Regex.Split(lineas[numLinea], HOST_MAC_TAG)[1];
+                                    temp = Regex.Split(temp, END_TAG)[0];
+                                    mac = mac + temp;
+                                    break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
+                                }
+
+                                // 2. Eje: 74820 00:0e:11:14:e9:2e</tag>
+                                else if(lineas[numLinea].Contains(END_TAG))
+                                {
+                                    temp = Regex.Split(lineas[numLinea], END_TAG)[0];
+                                    mac = mac + " " + temp;
+                                    break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
+                                }
+
+                                // 3. Eje: <tag name="mac-address">00:00:00:00:00:00
+                                else if(lineas[numLinea].Contains(HOST_MAC_TAG))
+                                {
+                                    temp = Regex.Split(lineas[numLinea], HOST_MAC_TAG)[1];
+                                    mac = mac + temp;
+                                }
+
+                                // 4. Eje: 00:22:57:b4:91:75
+                                else
+                                    mac = mac + " " + lineas[numLinea];
+
+                                numLinea++;
+                            }
+
+                        }
+
+                        //Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
+                        numLinea++;
                     }
+
+                    // Imprimir la información en la consola. 
+                    Console.WriteLine("Linea: " + numLinea + " --- hostname:" + hostname + " ---");
+                    Console.WriteLine("Linea: " + numLinea + " HOST_END: " + hostEnd);
+                    Console.WriteLine("Linea: " + numLinea + " HOST_START: " + hostStart);
                     Console.WriteLine("Linea: " + numLinea + " OS: " + operativeSystem);
-                    // if tag name leer la linea.
-                    // Leer las siguientes lineas con un while (incluyendo la actual) si tiene </tag> salir del ciclo con break
+                    Console.WriteLine("Linea: " + numLinea + " MAC: " + mac);                   
                     // Console.WriteLine("Linea: " + numLinea + " "+ lineas[numLinea]);
                 }
                 numLinea++;
