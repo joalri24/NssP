@@ -35,6 +35,10 @@ namespace PruebaLectorNessus
 
         const string HOST_MAC_TAG = "<tag name=\"mac-address\">";
 
+        const string HOST_IP_TAG = "<tag name=\"host-ip\">";
+
+        const string HOST_NETBIOS_TAG = "<tag name=\"netbios-name\">";
+
         const string END_TAG = "</";
 
         // ----------------------------------------------------
@@ -100,8 +104,10 @@ namespace PruebaLectorNessus
                     string hostname = "";
                     string hostEnd = "";
                     string hostStart = "";
+                    string hostIp = "";
                     string operativeSystem = "";
                     string mac = "";
+                    string netbiosName = "";
 
 
                     // Obtiene el nombre del host.
@@ -127,6 +133,21 @@ namespace PruebaLectorNessus
                             hostStart = Regex.Split(hostStart, END_TAG)[0];
                         }
 
+                        // Obtener el host-ip
+                        if (lineas[numLinea].Contains(HOST_IP_TAG))
+                        {
+                            // <tag name="host-ip">10.1.4.203</tag>
+                            hostIp = Regex.Split(lineas[numLinea], HOST_IP_TAG)[1];
+                            hostIp = Regex.Split(hostIp, END_TAG)[0];
+                        }
+
+                        // Obtener el netbios_name
+                        if (lineas[numLinea].Contains(HOST_NETBIOS_TAG))
+                        {
+                            // <tag name = "netbios-name">HMERCADO</tag>
+                            netbiosName = Regex.Split(lineas[numLinea], HOST_NETBIOS_TAG)[1];
+                            netbiosName = Regex.Split(netbiosName, END_TAG)[0];
+                        }
                         /** Obtiene el sistema operativo.
                          *
                          *   Eje 1:
@@ -235,8 +256,7 @@ namespace PruebaLectorNessus
                             }
 
                         }
-
-                        //Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
+                       
                         numLinea++;
                     }
 
@@ -245,7 +265,9 @@ namespace PruebaLectorNessus
                     Console.WriteLine("Linea: " + numLinea + " HOST_END: " + hostEnd);
                     Console.WriteLine("Linea: " + numLinea + " HOST_START: " + hostStart);
                     Console.WriteLine("Linea: " + numLinea + " OS: " + operativeSystem);
-                    Console.WriteLine("Linea: " + numLinea + " MAC: " + mac);                   
+                    Console.WriteLine("Linea: " + numLinea + " HOST_IP: " + hostIp);
+                    Console.WriteLine("Linea: " + numLinea + " MAC: " + mac);
+                    Console.WriteLine("Linea: " + numLinea + " NETBIOS_NAME: " + netbiosName);
                     // Console.WriteLine("Linea: " + numLinea + " "+ lineas[numLinea]);
                 }
                 numLinea++;
