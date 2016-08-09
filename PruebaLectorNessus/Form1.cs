@@ -19,7 +19,7 @@ namespace PruebaLectorNessus
         // Constantes
         // ----------------------------------------------------
 
-        const string REPORT_NAME_TAG = "<Report name";
+        const string REPORT_NAME_TAG = "<Report name=\"";
 
         const string REPORT_END_TAG = "</Report>";
 
@@ -45,13 +45,19 @@ namespace PruebaLectorNessus
         // Atributos
         // ----------------------------------------------------
 
+        private Reporte reporte;
+        
         // ----------------------------------------------------
         // Constructor
         // ----------------------------------------------------
 
+        /// <summary>
+        /// Método constructor.
+        /// Inicializa el formulario y la lista de hosts;
+        /// </summary>
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent();           
         }
 
         // ----------------------------------------------------
@@ -64,36 +70,34 @@ namespace PruebaLectorNessus
             // picture that the user chose.
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                reporte = new Reporte();
                 LeerArchivo(openFileDialog1.FileName);
-                
+                imprimirReporte();            
             }
         }
 
         /// <summary>
-        /// Lee el archivo. Cada línea es un campo 
+        /// Lee el archivo línea por línea y extrae la información correspondiente.
+        /// Crea un objeto de tipo reporte, un objeto de tipo Host por cada host del 
+        /// reporte, y un objeto de tipo vulnerabilidad por cada report item del host.
         /// </summary>
         /// <param name="fileName"></param>
         private void LeerArchivo(string fileName)
         {
-            String[] lineas = File.ReadAllLines(fileName);
-            /**foreach (string linea in lineas)
-            {
+            Console.WriteLine("Leyendo archivo...");
 
-                string[] datos = linea.Split('>');
-                string campo = datos[0];
-                string contenido = datos[1];
-                contenido = Regex.Split(contenido, "</")[0];
-                //Console.WriteLine(campo);
-                //Console.WriteLine(contenido);
-            }*/
+            String[] lineas = File.ReadAllLines(fileName);          
+            int numLinea = 0;
+            string reportName = "";
 
             // Iterar hasta que aparezca el tag "<Report name"
-            int numLinea = 0;
             while (!lineas[numLinea].Contains(REPORT_NAME_TAG))
                 numLinea++;
 
-            Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
-
+            // Leer el nombre del reporte.
+            // <Report name="TG" xmlns:cm="http://www.nessus.org/cm">
+            reportName = Regex.Split(lineas[numLinea], REPORT_NAME_TAG)[1].Split('"')[0];
+            reporte.nombre = reportName;                    
 
             // Iterar hasta el final del reporte: mientras la línea no contenga "</Report>":
             while (!lineas[numLinea].Contains(REPORT_END_TAG))
@@ -101,6 +105,7 @@ namespace PruebaLectorNessus
                 // Cuando encuentra un ReportHost, lee su información.
                 if (lineas[numLinea].Contains(REPORT_HOST_TAG))
                 {
+                    Host host = new Host();
                     string hostname = "";
                     string hostEnd = "";
                     string hostStart = "";
@@ -260,21 +265,50 @@ namespace PruebaLectorNessus
                         numLinea++;
                     }
 
-                    // Imprimir la información en la consola. 
-                    Console.WriteLine("Linea: " + numLinea + " --- hostname:" + hostname + " ---");
-                    Console.WriteLine("Linea: " + numLinea + " HOST_END: " + hostEnd);
-                    Console.WriteLine("Linea: " + numLinea + " HOST_START: " + hostStart);
-                    Console.WriteLine("Linea: " + numLinea + " OS: " + operativeSystem);
-                    Console.WriteLine("Linea: " + numLinea + " HOST_IP: " + hostIp);
-                    Console.WriteLine("Linea: " + numLinea + " MAC: " + mac);
-                    Console.WriteLine("Linea: " + numLinea + " NETBIOS_NAME: " + netbiosName);
-                    // Console.WriteLine("Linea: " + numLinea + " "+ lineas[numLinea]);
+                    // Agregar la información al objeto host y lo agrega a la lista de hosts
+                    host.hostname = hostname;
+                    host.hostEnd = hostEnd;
+                    host.hostStart = hostStart;
+                    host.operativeSystem = operativeSystem;
+                    host.hostIp = hostIp;
+                    host.mac = mac;
+                    host.netbiosName = netbiosName;
+                    reporte.hosts.Add(host);
+
+                    /* Imprimir la información en la consola. 
+                    Console.WriteLine("Línea: " + numLinea + " --- hostname:" + hostname + " ---");
+                    Console.WriteLine("Línea: " + numLinea + " HOST_END: " + hostEnd);
+                    Console.WriteLine("Línea: " + numLinea + " HOST_START: " + hostStart);
+                    Console.WriteLine("Línea: " + numLinea + " OS: " + operativeSystem);
+                    Console.WriteLine("Línea: " + numLinea + " HOST_IP: " + hostIp);
+                    Console.WriteLine("Línea: " + numLinea + " MAC: " + mac);
+                    Console.WriteLine("Línea: " + numLinea + " NETBIOS_NAME: " + netbiosName);
+                    // Console.WriteLine("Linea: " + numLinea + " "+ lineas[numLinea]); */
                 }
                 numLinea++;
             }
-            Console.WriteLine("Linea: " + numLinea + " " + lineas[numLinea]);
-            Console.WriteLine("*** Fin *** ");
+            //Console.WriteLine("Línea: " + numLinea + " " + lineas[numLinea]);
+            Console.WriteLine("Fin Lectura.");
             
         }
+
+        private void imprimirReporte()
+        {
+            Console.WriteLine("Reporte: " + reporte.nombre); 
+                
+            foreach(Host host in reporte.hosts)
+            {
+                Console.WriteLine("--- hostname:" + host.hostname + " ---");
+                Console.WriteLine("HOST_START: " + host.hostStart);
+                Console.WriteLine("HOST_END: " + host.hostEnd);               
+                Console.WriteLine("OS: " + host.operativeSystem);
+                Console.WriteLine("HOST_IP: " + host.hostIp);
+                Console.WriteLine("MAC: " + host.mac);
+                Console.WriteLine("NETBIOS_NAME: " + host.netbiosName);
+            }
+
+            Console.WriteLine("*** Fin Reporte ***");
+        }
+            
     }
 }

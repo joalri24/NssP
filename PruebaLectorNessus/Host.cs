@@ -6,22 +6,43 @@ using System.Threading.Tasks;
 
 namespace PruebaLectorNessus
 {
+    /// <summary>
+    /// Representa un host escaneado por nessus. Contiene un hostname, una dirección ip,
+    /// el o los sistemas operativos, la o las direcciones mac, el netbios name,  la fecha de inicio 
+    /// del escaneo y la fecha de final. 
+    /// </summary>
     class Host
     {
         // ----------------------------------------------------
         // Atributos
         // ----------------------------------------------------
-        public string nombre;
+
+        public string hostname;
+        public string hostEnd;
+        public string hostStart;
+        public string hostIp;
+        public string operativeSystem;
+        public string mac;
+        public string netbiosName;
+
+
+        // TODO lista de vulnerabilidades
+
         // ----------------------------------------------------
         // Constructor
         // ----------------------------------------------------
-        public Host(string nombreP)
+
+        public Host()
         {
-            nombre = nombreP;
+            // TODO inicializar lista de vulnerabilidades.
         }
+
+
         // ----------------------------------------------------
         // Métodos
         // ----------------------------------------------------
 
+
     }
 }
+

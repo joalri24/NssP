@@ -11,14 +11,14 @@ namespace PruebaLectorNessus
         // ----------------------------------------------------
         // Atributos
         // ----------------------------------------------------
-        public string reportName;
-
+        public string nombre;
+        public List<Host> hosts;
         // ----------------------------------------------------
         // Constructor
         // ----------------------------------------------------
         public Reporte()
         {
-            
+            hosts = new List<Host>();
         }
 
         // ----------------------------------------------------
