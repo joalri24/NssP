@@ -301,6 +301,10 @@ namespace PruebaLectorNessus
                             string puerto = "";
                             // Extraer datos del campo
                             //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
+                            puerto = Regex.Split(lineas[numLinea], "port=\"")[1];
+                            puerto = puerto.Split('"')[0];      
+                                         
+                            Console.WriteLine("puerto: " + puerto);
                             numItems++; //TODO borrar
                         }
 
