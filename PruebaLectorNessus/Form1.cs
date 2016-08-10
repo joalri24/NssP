@@ -43,6 +43,12 @@ namespace PruebaLectorNessus
 
         const string REPORT_ITEM_TAG = "<ReportItem";
 
+        const string REPORT_ITEM_END_TAG = "</ReportItem>";
+
+        const string ITEM_BID_TAG = "<bid>";
+
+        const string ITEM_CVE_TAG = "<cve>";
+
         const string END_TAG = "</";
 
         // ----------------------------------------------------
@@ -299,13 +305,60 @@ namespace PruebaLectorNessus
                         {
 
                             string puerto = "";
-                            // Extraer datos del campo
-                            //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
-                            puerto = Regex.Split(lineas[numLinea], "port=\"")[1];
-                            puerto = puerto.Split('"')[0];      
-                                         
-                            Console.WriteLine("puerto: " + puerto);
-                            numItems++; //TODO borrar
+                            string protocolo = "";
+                            int severidad = 0;
+                            string bid = "";
+                            string cve = "";
+
+                            string strSeveridad = Regex.Split(lineas[numLinea], "severity=\"")[1];
+                            strSeveridad = strSeveridad.Split('"')[0];
+                            severidad = Convert.ToInt16(strSeveridad);
+
+                            // Decide si scar todos los items o únicamente aquellos con severidad mayor a 0.
+                            //if (severidad > 0 || checkbox)   TODO
+                            if (severidad > 3)
+                            {
+                                // Extraer datos del campo
+                                //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
+                                puerto = Regex.Split(lineas[numLinea], "port=\"")[1];
+                                puerto = puerto.Split('"')[0];
+
+                                protocolo = Regex.Split(lineas[numLinea], "protocol=\"")[1];
+                                protocolo = protocolo.Split('"')[0];
+                                numItems++; //TODO borrar
+
+                                // Lee los campos dentro del report Item
+                                while (!lineas[numLinea].Contains(REPORT_ITEM_END_TAG))
+                                {
+                                    // Leer el BID                                   
+                                    if (lineas[numLinea].Contains(ITEM_BID_TAG))
+                                    {
+                                        // Eje: <bid>74013</bid>
+                                        bid = Regex.Split(lineas[numLinea], ITEM_BID_TAG)[1];
+                                        bid = Regex.Split(bid, END_TAG)[0];     
+                                    }
+
+                                    // Leer el CVE
+                                    if (lineas[numLinea].Contains(ITEM_CVE_TAG))
+                                    {
+                                        // Eje: <cve>CVE-2015-1635</cve>
+                                        cve = Regex.Split(lineas[numLinea], ITEM_CVE_TAG)[1];
+                                        cve = Regex.Split(cve, END_TAG)[0];
+                                    }
+
+
+                                    numLinea++;
+                                }
+
+
+                                //Console.WriteLine("Puerto: " + puerto);
+                                //Console.WriteLine("Protocolo: " + protocolo);
+                                //Console.WriteLine("Severidad: " + severidad);
+                                //Console.WriteLine("Bid: " + bid);
+                                Console.WriteLine("Cve: " + cve);
+                            }      
+                            
+                                           
                         }
 
                         numLinea++;
