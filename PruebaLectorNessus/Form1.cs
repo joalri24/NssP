@@ -49,6 +49,8 @@ namespace PruebaLectorNessus
 
         const string ITEM_CVE_TAG = "<cve>";
 
+        const string ITEM_EXPLOIT_AVAILABLE_TAG = "<exploit_available>";
+
         const string END_TAG = "</";
 
         // ----------------------------------------------------
@@ -309,6 +311,7 @@ namespace PruebaLectorNessus
                             int severidad = 0;
                             string bid = "";
                             string cve = "";
+                            string exploitAvailable = "false";
 
                             string strSeveridad = Regex.Split(lineas[numLinea], "severity=\"")[1];
                             strSeveridad = strSeveridad.Split('"')[0];
@@ -316,7 +319,7 @@ namespace PruebaLectorNessus
 
                             // Decide si scar todos los items o únicamente aquellos con severidad mayor a 0.
                             //if (severidad > 0 || checkbox)   TODO
-                            if (severidad > 3)
+                            if (severidad > 1)
                             {
                                 // Extraer datos del campo
                                 //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
@@ -346,6 +349,15 @@ namespace PruebaLectorNessus
                                         cve = Regex.Split(cve, END_TAG)[0];
                                     }
 
+                                    // Leer el Exploit available
+                                    if (lineas[numLinea].Contains(ITEM_EXPLOIT_AVAILABLE_TAG))
+                                    {
+                                        // Eje: <exploit_available>true</exploit_available>
+                                        exploitAvailable = Regex.Split(lineas[numLinea], ITEM_EXPLOIT_AVAILABLE_TAG)[1];
+                                        exploitAvailable = Regex.Split(exploitAvailable, END_TAG)[0];
+
+                                    }
+
 
                                     numLinea++;
                                 }
@@ -355,7 +367,8 @@ namespace PruebaLectorNessus
                                 //Console.WriteLine("Protocolo: " + protocolo);
                                 //Console.WriteLine("Severidad: " + severidad);
                                 //Console.WriteLine("Bid: " + bid);
-                                Console.WriteLine("Cve: " + cve);
+                                //Console.WriteLine("Cve: " + cve);
+                                Console.WriteLine("Exploit available: " + exploitAvailable);
                             }      
                             
                                            
