@@ -25,6 +25,8 @@ namespace PruebaLectorNessus
 
         const string REPORT_HOST_TAG = "<ReportHost";
 
+        const string REPORT_HOST_END_TAG = "</ReportHost>";
+
         const string HOST_PROPERTIES_END_TAG = "</HostProperties>";
 
         const string HOST_END_TAG = "<tag name=\"HOST_END\">";
@@ -38,6 +40,8 @@ namespace PruebaLectorNessus
         const string HOST_IP_TAG = "<tag name=\"host-ip\">";
 
         const string HOST_NETBIOS_TAG = "<tag name=\"netbios-name\">";
+
+        const string REPORT_ITEM_TAG = "<ReportItem";
 
         const string END_TAG = "</";
 
@@ -79,7 +83,7 @@ namespace PruebaLectorNessus
         /// <summary>
         /// Lee el archivo línea por línea y extrae la información correspondiente.
         /// Crea un objeto de tipo reporte, un objeto de tipo Host por cada host del 
-        /// reporte, y un objeto de tipo vulnerabilidad por cada report item del host.
+        /// reporte, y un objeto de tipo vulnerabilidad por cada vulnerabilidad del host.
         /// </summary>
         /// <param name="fileName"></param>
         private void LeerArchivo(string fileName)
@@ -95,7 +99,7 @@ namespace PruebaLectorNessus
                 numLinea++;
 
             // Leer el nombre del reporte.
-            // <Report name="TG" xmlns:cm="http://www.nessus.org/cm">
+            // Eje: <Report name="TG" xmlns:cm="http://www.nessus.org/cm">
             reportName = Regex.Split(lineas[numLinea], REPORT_NAME_TAG)[1].Split('"')[0];
             reporte.nombre = reportName;                    
 
@@ -103,6 +107,10 @@ namespace PruebaLectorNessus
             while (!lineas[numLinea].Contains(REPORT_END_TAG))
             {
                 // Cuando encuentra un ReportHost, lee su información.
+
+                //TODO borrar: ----
+                int numItems = 0;
+                //----------------------
                 if (lineas[numLinea].Contains(REPORT_HOST_TAG))
                 {
                     Host host = new Host();
@@ -113,7 +121,6 @@ namespace PruebaLectorNessus
                     string operativeSystem = "";
                     string mac = "";
                     string netbiosName = "";
-
 
                     // Obtiene el nombre del host.
                     hostname = Regex.Split(lineas[numLinea], "name=\"")[1].Split('"')[0];  //<ReportHost name="10.1.4.180"><HostProperties>                    
@@ -153,6 +160,7 @@ namespace PruebaLectorNessus
                             netbiosName = Regex.Split(lineas[numLinea], HOST_NETBIOS_TAG)[1];
                             netbiosName = Regex.Split(netbiosName, END_TAG)[0];
                         }
+
                         /** Obtiene el sistema operativo.
                          *
                          *   Eje 1:
@@ -259,12 +267,10 @@ namespace PruebaLectorNessus
 
                                 numLinea++;
                             }
-
                         }
                        
                         numLinea++;
-                    }
-
+                    }                                    
                     // Agregar la información al objeto host y lo agrega a la lista de hosts
                     host.hostname = hostname;
                     host.hostEnd = hostEnd;
@@ -275,16 +281,34 @@ namespace PruebaLectorNessus
                     host.netbiosName = netbiosName;
                     reporte.hosts.Add(host);
 
-                    /* Imprimir la información en la consola. 
+                    // Imprimir la información en la consola. 
                     Console.WriteLine("Línea: " + numLinea + " --- hostname:" + hostname + " ---");
-                    Console.WriteLine("Línea: " + numLinea + " HOST_END: " + hostEnd);
-                    Console.WriteLine("Línea: " + numLinea + " HOST_START: " + hostStart);
-                    Console.WriteLine("Línea: " + numLinea + " OS: " + operativeSystem);
-                    Console.WriteLine("Línea: " + numLinea + " HOST_IP: " + hostIp);
-                    Console.WriteLine("Línea: " + numLinea + " MAC: " + mac);
-                    Console.WriteLine("Línea: " + numLinea + " NETBIOS_NAME: " + netbiosName);
-                    // Console.WriteLine("Linea: " + numLinea + " "+ lineas[numLinea]); */
+                    //Console.WriteLine("Línea: " + numLinea + " HOST_END: " + hostEnd);
+                    //Console.WriteLine("Línea: " + numLinea + " HOST_START: " + hostStart);
+                    //Console.WriteLine("Línea: " + numLinea + " OS: " + operativeSystem);
+                    //Console.WriteLine("Línea: " + numLinea + " HOST_IP: " + hostIp);
+                    //Console.WriteLine("Línea: " + numLinea + " MAC: " + mac);
+                    //Console.WriteLine("Línea: " + numLinea + " NETBIOS_NAME: " + netbiosName);
+                    //Console.WriteLine("Linea: " + numLinea + " "+ lineas[numLinea]);      
+
+                    // Iterar hasta que encuentra un tag de fin del host.
+                    while (!lineas[numLinea].Contains(REPORT_HOST_END_TAG))
+                    {
+                        // Leer la información de los report items
+                        if (lineas[numLinea].Contains(REPORT_ITEM_TAG))
+                        {
+
+                            string puerto = "";
+                            // Extraer datos del campo
+                            //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
+                            numItems++; //TODO borrar
+                        }
+
+                        numLinea++;
+                    }
+                    Console.WriteLine("Report items: " + numItems);                        
                 }
+
                 numLinea++;
             }
             //Console.WriteLine("Línea: " + numLinea + " " + lineas[numLinea]);
