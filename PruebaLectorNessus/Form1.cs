@@ -55,6 +55,10 @@ namespace PruebaLectorNessus
 
         const string ITEM_RISK_FACTOR_TAG = "<risk_factor>";
 
+        const string ITEM_PLUGIN_NAME_TAG = "<plugin_name>";
+
+        const string ITEM_SYNOPSIS_TAG = "<synopsis>";
+
         const string END_TAG = "</";
 
 
@@ -320,6 +324,8 @@ namespace PruebaLectorNessus
                             string exploitAvailable = "false";
                             string cvssTemporalScore = "";
                             string riskFactor = "";
+                            string pluginName = "";
+                            string sinopsis = "";
 
                             string strSeveridad = Regex.Split(lineas[numLinea], "severity=\"")[1];
                             strSeveridad = strSeveridad.Split('"')[0];
@@ -327,7 +333,7 @@ namespace PruebaLectorNessus
 
                             // Decide si sacar todos los items o únicamente aquellos con severidad mayor a 0.
                             //if (severidad > 0 || checkbox)   TODO
-                            if (severidad > 1)
+                            if (severidad > 3)
                             {
                                 // Extraer datos del campo
                                 //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
@@ -376,10 +382,27 @@ namespace PruebaLectorNessus
                                     // Leer el factor de riesgo
                                     if (lineas[numLinea].Contains(ITEM_RISK_FACTOR_TAG))
                                     {
-                                        // Eje: <cvss_temporal_score>8.7</cvss_temporal_score>
+                                        // Eje: <risk_factor>None</risk_factor>
                                         riskFactor = Regex.Split(lineas[numLinea], ITEM_RISK_FACTOR_TAG)[1];
                                         riskFactor = Regex.Split(riskFactor, END_TAG)[0];
                                     }
+
+                                    // Leer el nombre del plug-in
+                                    if (lineas[numLinea].Contains(ITEM_PLUGIN_NAME_TAG))
+                                    {
+                                        // Eje: <plugin_name>Service Detection</plugin_name>
+                                        pluginName = Regex.Split(lineas[numLinea], ITEM_PLUGIN_NAME_TAG)[1];
+                                        pluginName = Regex.Split(pluginName, END_TAG)[0];
+                                    }
+
+                                    // Leer la sinopsis
+                                    if (lineas[numLinea].Contains(ITEM_SYNOPSIS_TAG))
+                                    {
+                                        // Eje: <synopsis>The remote web server does not return 404 error codes.</synopsis>
+                                        sinopsis = Regex.Split(lineas[numLinea], ITEM_SYNOPSIS_TAG)[1];
+                                        sinopsis = Regex.Split(sinopsis, END_TAG)[0]; 
+                                    }
+
                                     numLinea++;
                                 }
 
@@ -391,7 +414,9 @@ namespace PruebaLectorNessus
                                 //Console.WriteLine("Cve: " + cve);
                                 //Console.WriteLine("Exploit available: " + exploitAvailable);
                                 //Console.WriteLine("Cvss temporal score: " + cvssTemporalScore);
-                                Console.WriteLine("Risk factor: " + riskFactor);
+                                //Console.WriteLine("Risk factor: " + riskFactor);
+                                //Console.WriteLine("Plugin name: " + pluginName);
+                                //Console.WriteLine("Sinopsis: " + sinopsis);
                             }      
                             
                                            
