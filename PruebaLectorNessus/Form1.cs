@@ -63,7 +63,7 @@ namespace PruebaLectorNessus
 
         const string ITEM_SEE_ALSO_TAG = "<see_also>";
 
-
+        const string ITEM_XREF_TAG = "<xref>";
 
         const string END_TAG = "</";
 
@@ -334,14 +334,15 @@ namespace PruebaLectorNessus
                             string sinopsis = "";
                             string solucion = "";
                             string seeAlso = "";
-
+                            string xref = ""
+;
                             string strSeveridad = Regex.Split(lineas[numLinea], "severity=\"")[1];
                             strSeveridad = strSeveridad.Split('"')[0];
                             severidad = Convert.ToInt16(strSeveridad);
 
                             // Decide si sacar todos los items o únicamente aquellos con severidad mayor a 0.
                             //if (severidad > 0 || checkbox)   TODO
-                            if (severidad > 3)
+                            if (severidad > -1)
                             {
                                 // Extraer datos del campo
                                 //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
@@ -409,6 +410,16 @@ namespace PruebaLectorNessus
                                         // Eje: <synopsis>The remote web server does not return 404 error codes.</synopsis>
                                         sinopsis = Regex.Split(lineas[numLinea], ITEM_SYNOPSIS_TAG)[1];
                                         sinopsis = Regex.Split(sinopsis, END_TAG)[0]; 
+                                    }
+
+                                    // Leer el campo xref
+                                    if (lineas[numLinea].Contains(ITEM_XREF_TAG))
+                                    {
+                                        // Eje: <xref>OSVDB:91162</xref>
+                                        string temp = "";
+                                        temp = Regex.Split(lineas[numLinea], ITEM_XREF_TAG)[1];
+                                        temp = Regex.Split(temp, END_TAG)[0];
+                                        xref = (xref == "") ? xref + temp : xref + "\n" + temp;
                                     }
 
                                     // Leer la solución
@@ -530,7 +541,8 @@ namespace PruebaLectorNessus
                                 //Console.WriteLine("Plugin name: " + pluginName);
                                 //Console.WriteLine("Sinopsis: " + sinopsis);
                                 //Console.WriteLine("Solución: " + solucion);
-                                Console.WriteLine("See also: " + seeAlso);
+                                //Console.WriteLine("See also: " + seeAlso);
+                                Console.WriteLine("XREF: " + xref);
                             }
 
 
