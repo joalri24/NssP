@@ -51,13 +51,19 @@ namespace PruebaLectorNessus
 
         const string ITEM_EXPLOIT_AVAILABLE_TAG = "<exploit_available>";
 
+        const string ITEM_CVSS_SCORE_TAG = "<cvss_temporal_score>";
+
+        const string ITEM_RISK_FACTOR_TAG = "<risk_factor>";
+
         const string END_TAG = "</";
+
 
         // ----------------------------------------------------
         // Atributos
         // ----------------------------------------------------
 
         private Reporte reporte;
+
         
         // ----------------------------------------------------
         // Constructor
@@ -175,7 +181,7 @@ namespace PruebaLectorNessus
                          *   <tag name="operating-system">AIX 4.3.2
                          *   AIX 5.2
                          *   CatalystOS 6.3
-                         *   VAX / VMS 7.1 </tag > 
+                         *   VAX / VMS 7.1 </tag> 
                          *
                          *   Eje 2:
                          *   <tag name="operating-system">RICOH Printer</tag> 
@@ -278,8 +284,9 @@ namespace PruebaLectorNessus
                         }
                        
                         numLinea++;
-                    }                                    
-                    // Agregar la información al objeto host y lo agrega a la lista de hosts
+                    }     
+                                                   
+                    // Agrega la información al objeto host y lo agrega a la lista de hosts
                     host.hostname = hostname;
                     host.hostEnd = hostEnd;
                     host.hostStart = hostStart;
@@ -302,22 +309,23 @@ namespace PruebaLectorNessus
                     // Iterar hasta que encuentra un tag de fin del host.
                     while (!lineas[numLinea].Contains(REPORT_HOST_END_TAG))
                     {
-                        // Leer la información de los report items
+                        // Si encuentra un ReportItem, leer su información.
                         if (lineas[numLinea].Contains(REPORT_ITEM_TAG))
                         {
-
                             string puerto = "";
                             string protocolo = "";
                             int severidad = 0;
                             string bid = "";
                             string cve = "";
                             string exploitAvailable = "false";
+                            string cvssTemporalScore = "";
+                            string riskFactor = "";
 
                             string strSeveridad = Regex.Split(lineas[numLinea], "severity=\"")[1];
                             strSeveridad = strSeveridad.Split('"')[0];
                             severidad = Convert.ToInt16(strSeveridad);
 
-                            // Decide si scar todos los items o únicamente aquellos con severidad mayor a 0.
+                            // Decide si sacar todos los items o únicamente aquellos con severidad mayor a 0.
                             //if (severidad > 0 || checkbox)   TODO
                             if (severidad > 1)
                             {
@@ -355,10 +363,23 @@ namespace PruebaLectorNessus
                                         // Eje: <exploit_available>true</exploit_available>
                                         exploitAvailable = Regex.Split(lineas[numLinea], ITEM_EXPLOIT_AVAILABLE_TAG)[1];
                                         exploitAvailable = Regex.Split(exploitAvailable, END_TAG)[0];
-
                                     }
 
+                                    // Leer el cvss temporal score>
+                                    if (lineas[numLinea].Contains(ITEM_CVSS_SCORE_TAG))
+                                    {
+                                        // Eje: <cvss_temporal_score>8.7</cvss_temporal_score>
+                                        cvssTemporalScore = Regex.Split(lineas[numLinea], ITEM_CVSS_SCORE_TAG)[1];
+                                        cvssTemporalScore = Regex.Split(cvssTemporalScore, END_TAG)[0];
+                                    }
 
+                                    // Leer el factor de riesgo
+                                    if (lineas[numLinea].Contains(ITEM_RISK_FACTOR_TAG))
+                                    {
+                                        // Eje: <cvss_temporal_score>8.7</cvss_temporal_score>
+                                        riskFactor = Regex.Split(lineas[numLinea], ITEM_RISK_FACTOR_TAG)[1];
+                                        riskFactor = Regex.Split(riskFactor, END_TAG)[0];
+                                    }
                                     numLinea++;
                                 }
 
@@ -368,7 +389,9 @@ namespace PruebaLectorNessus
                                 //Console.WriteLine("Severidad: " + severidad);
                                 //Console.WriteLine("Bid: " + bid);
                                 //Console.WriteLine("Cve: " + cve);
-                                Console.WriteLine("Exploit available: " + exploitAvailable);
+                                //Console.WriteLine("Exploit available: " + exploitAvailable);
+                                //Console.WriteLine("Cvss temporal score: " + cvssTemporalScore);
+                                Console.WriteLine("Risk factor: " + riskFactor);
                             }      
                             
                                            
