@@ -63,6 +63,8 @@ namespace PruebaLectorNessus
 
         const string ITEM_SEE_ALSO_TAG = "<see_also>";
 
+
+
         const string END_TAG = "</";
 
 
@@ -331,6 +333,7 @@ namespace PruebaLectorNessus
                             string pluginName = "";
                             string sinopsis = "";
                             string solucion = "";
+                            string seeAlso = "";
 
                             string strSeveridad = Regex.Split(lineas[numLinea], "severity=\"")[1];
                             strSeveridad = strSeveridad.Split('"')[0];
@@ -338,7 +341,7 @@ namespace PruebaLectorNessus
 
                             // Decide si sacar todos los items o únicamente aquellos con severidad mayor a 0.
                             //if (severidad > 0 || checkbox)   TODO
-                            if (severidad > 2)
+                            if (severidad > 3)
                             {
                                 // Extraer datos del campo
                                 //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
@@ -460,6 +463,57 @@ namespace PruebaLectorNessus
                                         }
                                     }
 
+                                    // Leer el campo de "see also" 
+                                    if (lineas[numLinea].Contains(ITEM_SEE_ALSO_TAG))
+                                    {
+                                        /* Eje 1: <see_also>http://msdn.microsoft.com/en-us/library/dd304523.aspx</see_also>
+                                         *
+                                         * Eje 2:
+                                         * <see_also>http://www.nessus.org/u?217a3666
+                                         * http://cr.yp.to/talks/2013.03.12/slides.pdf
+                                         * http://www.isg.rhul.ac.uk/tls/
+                                         * http://www.imperva.com/docs/HII_Attacking_SSL_when_using_RC4.pdf</see_also>
+                                         */
+                                        while (true)  // Recorre todas las líneas del campo
+                                        {
+                                            // Existen diferentes casos. 
+                                            // 1. El tag de inicio y el tag de final están en la misma línea
+                                            // 2. Únicamente el tag de final está en la línea.
+                                            // 3. Únicamente el tag de inicio está en la línea.
+                                            // 4. La línea no tiene tags.
+
+                                            string sa = "";
+                                            // 1. Eje: <see_also>http://msdn.microsoft.com/en-us/library/dd304523.aspx</see_also>
+                                            if (lineas[numLinea].Contains(ITEM_SEE_ALSO_TAG) && lineas[numLinea].Contains(END_TAG))
+                                            {
+                                                sa = Regex.Split(lineas[numLinea], ITEM_SEE_ALSO_TAG)[1];
+                                                sa = Regex.Split(sa, END_TAG)[0];
+                                                seeAlso = seeAlso + sa;
+                                                break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
+                                            }
+
+                                            // 2. Eje: http://www.imperva.com/docs/HII_Attacking_SSL_when_using_RC4.pdf</see_also>
+                                            else if (lineas[numLinea].Contains(END_TAG))
+                                            {
+                                                sa = Regex.Split(lineas[numLinea], END_TAG)[0];
+                                                seeAlso = seeAlso + "\n" + sa;
+                                                break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
+                                            }
+
+                                            // 3. Eje: <see_also>http://www.nessus.org/u?217a3666
+                                            else if (lineas[numLinea].Contains(ITEM_SEE_ALSO_TAG))
+                                            {
+                                                sa = Regex.Split(lineas[numLinea], ITEM_SEE_ALSO_TAG)[1];
+                                                seeAlso = seeAlso + sa;
+                                            }
+
+                                            // 4. Eje: http://cr.yp.to/talks/2013.03.12/slides.pdf
+                                            else
+                                                seeAlso = seeAlso + "\n" + lineas[numLinea];
+
+                                            numLinea++;
+                                        }
+                                    }
 
                                     numLinea++;
                                 }
@@ -475,7 +529,8 @@ namespace PruebaLectorNessus
                                 //Console.WriteLine("Risk factor: " + riskFactor);
                                 //Console.WriteLine("Plugin name: " + pluginName);
                                 //Console.WriteLine("Sinopsis: " + sinopsis);
-                                Console.WriteLine("Solución: " + solucion);
+                                //Console.WriteLine("Solución: " + solucion);
+                                Console.WriteLine("See also: " + seeAlso);
                             }
 
 
