@@ -322,6 +322,7 @@ namespace PruebaLectorNessus
                         // Si encuentra un ReportItem, leer su información.
                         if (lineas[numLinea].Contains(REPORT_ITEM_TAG))
                         {
+                            Vulnerabilidad vulnerabilidad = new Vulnerabilidad();
                             string puerto = "";
                             string protocolo = "";
                             int severidad = 0;
@@ -529,6 +530,8 @@ namespace PruebaLectorNessus
                                     numLinea++;
                                 }
 
+                                // TODO Crear objeto vulnerabilidad y agregarlo a la lista de vulnerabilidades 
+                                // del host.
 
                                 //Console.WriteLine("Puerto: " + puerto);
                                 //Console.WriteLine("Protocolo: " + protocolo);
@@ -542,10 +545,8 @@ namespace PruebaLectorNessus
                                 //Console.WriteLine("Sinopsis: " + sinopsis);
                                 //Console.WriteLine("Solución: " + solucion);
                                 //Console.WriteLine("See also: " + seeAlso);
-                                Console.WriteLine("XREF: " + xref);
+                                //Console.WriteLine("XREF: " + xref);
                             }
-
-
                         }
 
                         numLinea++;

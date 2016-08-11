@@ -25,8 +25,7 @@ namespace PruebaLectorNessus
         public string mac;
         public string netbiosName;
 
-
-        // TODO lista de vulnerabilidades
+        public List<Vulnerabilidad> vulnerabilidades;
 
         // ----------------------------------------------------
         // Constructor
@@ -34,7 +33,7 @@ namespace PruebaLectorNessus
 
         public Host()
         {
-            // TODO inicializar lista de vulnerabilidades.
+            vulnerabilidades = new List<Vulnerabilidad>();
         }
 
 
