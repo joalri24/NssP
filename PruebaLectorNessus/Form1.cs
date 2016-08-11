@@ -59,6 +59,10 @@ namespace PruebaLectorNessus
 
         const string ITEM_SYNOPSIS_TAG = "<synopsis>";
 
+        const string ITEM_SOLUTION_TAG = "<solution>";
+
+        const string ITEM_SEE_ALSO_TAG = "<see_also>";
+
         const string END_TAG = "</";
 
 
@@ -326,6 +330,7 @@ namespace PruebaLectorNessus
                             string riskFactor = "";
                             string pluginName = "";
                             string sinopsis = "";
+                            string solucion = "";
 
                             string strSeveridad = Regex.Split(lineas[numLinea], "severity=\"")[1];
                             strSeveridad = strSeveridad.Split('"')[0];
@@ -333,7 +338,7 @@ namespace PruebaLectorNessus
 
                             // Decide si sacar todos los items o únicamente aquellos con severidad mayor a 0.
                             //if (severidad > 0 || checkbox)   TODO
-                            if (severidad > 3)
+                            if (severidad > 2)
                             {
                                 // Extraer datos del campo
                                 //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
@@ -403,6 +408,59 @@ namespace PruebaLectorNessus
                                         sinopsis = Regex.Split(sinopsis, END_TAG)[0]; 
                                     }
 
+                                    // Leer la solución
+                                    if (lineas[numLinea].Contains(ITEM_SOLUTION_TAG))
+                                    {
+                                        /* Eje 1: "<solution>n/a</solution>"
+                                         *
+                                         * Eje 2:
+                                         * <solution>- Force the use of SSL as a transport layer for this service if supported, or/and
+                                         * 
+                                         * - Select the &apos;Allow connections only from computers running Remote Desktop with Network Level Authentication&apos; setting if it is available.</solution>
+                                         */
+                                        while (true)  // Recorre todas las líneas del campo
+                                        {
+
+                                            // Existen diferentes casos. 
+                                            // 1. El tag de inicio y el tag de final están en la misma línea
+                                            // 2. Únicamente el tag de final está en la línea.
+                                            // 3. Únicamente el tag de inicio está en la línea.
+                                            // 4. La línea no tiene tags.
+
+                                            string so = "";
+                                            // 1. Eje: "<solution>n/a</solution>"
+                                            if (lineas[numLinea].Contains(ITEM_SOLUTION_TAG) && lineas[numLinea].Contains(END_TAG))
+                                            {
+                                                so = Regex.Split(lineas[numLinea], ITEM_SOLUTION_TAG)[1];
+                                                so = Regex.Split(so, END_TAG)[0];
+                                                solucion = solucion + so;
+                                                break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
+                                            }
+
+                                            // 2. Eje: setting if it is available.</solution>
+                                            else if (lineas[numLinea].Contains(END_TAG))
+                                            {
+                                                so = Regex.Split(lineas[numLinea], END_TAG)[0];
+                                                solucion = solucion + "\n" + so;
+                                                break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
+                                            }
+
+                                            // 3. Eje: <solution>- Force the use of SSL as a transport layer
+                                            else if (lineas[numLinea].Contains(ITEM_SOLUTION_TAG))
+                                            {
+                                                so = Regex.Split(lineas[numLinea], ITEM_SOLUTION_TAG)[1];
+                                                solucion = solucion + so;
+                                            }
+
+                                            // 4. Eje: - Select the &apos;Allow connections only from computers running Remote Desktop
+                                            else
+                                                solucion = solucion + "\n" + lineas[numLinea];
+
+                                            numLinea++;
+                                        }
+                                    }
+
+
                                     numLinea++;
                                 }
 
@@ -417,9 +475,10 @@ namespace PruebaLectorNessus
                                 //Console.WriteLine("Risk factor: " + riskFactor);
                                 //Console.WriteLine("Plugin name: " + pluginName);
                                 //Console.WriteLine("Sinopsis: " + sinopsis);
-                            }      
-                            
-                                           
+                                Console.WriteLine("Solución: " + solucion);
+                            }
+
+
                         }
 
                         numLinea++;
