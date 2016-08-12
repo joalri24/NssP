@@ -65,6 +65,8 @@ namespace PruebaLectorNessus
 
         const string ITEM_XREF_TAG = "<xref>";
 
+        const string ITEM_DESCRIPTION_TAG = "<description>";
+
         const string END_TAG = "</";
 
 
@@ -100,7 +102,7 @@ namespace PruebaLectorNessus
             {
                 reporte = new Reporte();
                 LeerArchivo(openFileDialog1.FileName);
-                imprimirReporte();            
+                //imprimirReporte();            
             }
         }
 
@@ -335,15 +337,16 @@ namespace PruebaLectorNessus
                             string sinopsis = "";
                             string solucion = "";
                             string seeAlso = "";
-                            string xref = ""
-;
+                            string xref = "";
+                            string descripcion = "";
+
                             string strSeveridad = Regex.Split(lineas[numLinea], "severity=\"")[1];
                             strSeveridad = strSeveridad.Split('"')[0];
                             severidad = Convert.ToInt16(strSeveridad);
 
                             // Decide si sacar todos los items o únicamente aquellos con severidad mayor a 0.
                             //if (severidad > 0 || checkbox)   TODO
-                            if (severidad > -1)
+                            if (severidad > 2)
                             {
                                 // Extraer datos del campo
                                 //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
@@ -361,16 +364,20 @@ namespace PruebaLectorNessus
                                     if (lineas[numLinea].Contains(ITEM_BID_TAG))
                                     {
                                         // Eje: <bid>74013</bid>
-                                        bid = Regex.Split(lineas[numLinea], ITEM_BID_TAG)[1];
-                                        bid = Regex.Split(bid, END_TAG)[0];     
+                                        string temp = "";
+                                        temp = Regex.Split(lineas[numLinea], ITEM_BID_TAG)[1];
+                                        temp = Regex.Split(temp, END_TAG)[0];
+                                        bid = (bid == "") ? bid + temp : bid + " " + temp;
                                     }
 
                                     // Leer el CVE
                                     if (lineas[numLinea].Contains(ITEM_CVE_TAG))
                                     {
                                         // Eje: <cve>CVE-2015-1635</cve>
-                                        cve = Regex.Split(lineas[numLinea], ITEM_CVE_TAG)[1];
-                                        cve = Regex.Split(cve, END_TAG)[0];
+                                        string temp = "";
+                                        temp = Regex.Split(lineas[numLinea], ITEM_CVE_TAG)[1];
+                                        temp = Regex.Split(temp, END_TAG)[0];
+                                        cve = (cve == "") ? cve + temp : cve + " " + temp;
                                     }
 
                                     // Leer el Exploit available
@@ -420,7 +427,7 @@ namespace PruebaLectorNessus
                                         string temp = "";
                                         temp = Regex.Split(lineas[numLinea], ITEM_XREF_TAG)[1];
                                         temp = Regex.Split(temp, END_TAG)[0];
-                                        xref = (xref == "") ? xref + temp : xref + "\n" + temp;
+                                        xref = (xref == "") ? xref + temp : xref + " " + temp;
                                     }
 
                                     // Leer la solución
@@ -456,7 +463,7 @@ namespace PruebaLectorNessus
                                             else if (lineas[numLinea].Contains(END_TAG))
                                             {
                                                 so = Regex.Split(lineas[numLinea], END_TAG)[0];
-                                                solucion = solucion + "\n" + so;
+                                                solucion = solucion + " " + so;
                                                 break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
                                             }
 
@@ -469,7 +476,7 @@ namespace PruebaLectorNessus
 
                                             // 4. Eje: - Select the &apos;Allow connections only from computers running Remote Desktop
                                             else
-                                                solucion = solucion + "\n" + lineas[numLinea];
+                                                solucion = solucion + " " + lineas[numLinea];
 
                                             numLinea++;
                                         }
@@ -508,7 +515,7 @@ namespace PruebaLectorNessus
                                             else if (lineas[numLinea].Contains(END_TAG))
                                             {
                                                 sa = Regex.Split(lineas[numLinea], END_TAG)[0];
-                                                seeAlso = seeAlso + "\n" + sa;
+                                                seeAlso = seeAlso + " " + sa;
                                                 break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
                                             }
 
@@ -521,7 +528,60 @@ namespace PruebaLectorNessus
 
                                             // 4. Eje: http://cr.yp.to/talks/2013.03.12/slides.pdf
                                             else
-                                                seeAlso = seeAlso + "\n" + lineas[numLinea];
+                                                seeAlso = seeAlso + " " + lineas[numLinea];
+
+                                            numLinea++;
+                                        }
+                                    }
+
+                                    // Leer la descripción
+                                    if (lineas[numLinea].Contains(ITEM_DESCRIPTION_TAG))
+                                    {
+                                      
+                                        // Eje: 
+                                        /* <description>According to the web server&apos;s banner, the version of HP System Management Homepage (SMH) hosted on the remote web server is prior to 7.2.6. It is, therefore, affected by multiple vulnerabilities, including remote code execution vulnerabilities, in several components and third-party libraries :
+                                         *
+                                         * - HP SMH (XSRF)
+                                         * - libcurl
+                                         * - OpenSSL</description>
+                                         */
+                                        
+                                        while (true)  // Recorre todas las líneas del campo
+                                        {
+                                            // Existen diferentes casos. 
+                                            // 1. El tag de inicio y el tag de final están en la misma línea
+                                            // 2. Únicamente el tag de final está en la línea.
+                                            // 3. Únicamente el tag de inicio está en la línea.
+                                            // 4. La línea no tiene tags.
+
+                                            string des = "";
+                                            // 1. <description>The version of GlassFish Server running on the remote host is affected by an unspecified vulnerability in the Admin Console.</description>
+                                            if (lineas[numLinea].Contains(ITEM_DESCRIPTION_TAG) && lineas[numLinea].Contains(END_TAG))
+                                            {
+                                                des = Regex.Split(lineas[numLinea], ITEM_DESCRIPTION_TAG)[1];
+                                                des = Regex.Split(des, END_TAG)[0];
+                                                descripcion = descripcion + des;
+                                                break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
+                                            }
+
+                                            // 2. Eje: - OpenSSL</description>
+                                            else if (lineas[numLinea].Contains(END_TAG))
+                                            {
+                                                des = Regex.Split(lineas[numLinea], END_TAG)[0];
+                                                descripcion = descripcion + " " + des;
+                                                break; // Termina el ciclo cuando encuentra el tag de cierre: "</"
+                                            }
+
+                                            // 3. Eje: <description>According to the web server&apos;s
+                                            else if (lineas[numLinea].Contains(ITEM_DESCRIPTION_TAG))
+                                            {
+                                                des = Regex.Split(lineas[numLinea], ITEM_DESCRIPTION_TAG)[1];
+                                                descripcion = descripcion + des;
+                                            }
+
+                                            // 4. Eje: - HP SMH (XSRF)
+                                            else
+                                                descripcion = descripcion + " " + lineas[numLinea];
 
                                             numLinea++;
                                         }
@@ -530,9 +590,14 @@ namespace PruebaLectorNessus
                                     numLinea++;
                                 }
 
+                                
+
                                 // TODO Crear objeto vulnerabilidad y agregarlo a la lista de vulnerabilidades 
                                 // del host.
 
+
+                                Console.WriteLine("--");
+                                Console.WriteLine("Descripción: " + descripcion);
                                 //Console.WriteLine("Puerto: " + puerto);
                                 //Console.WriteLine("Protocolo: " + protocolo);
                                 //Console.WriteLine("Severidad: " + severidad);
