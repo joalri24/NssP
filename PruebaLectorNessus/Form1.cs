@@ -102,7 +102,7 @@ namespace PruebaLectorNessus
             {
                 reporte = new Reporte();
                 LeerArchivo(openFileDialog1.FileName);
-                //imprimirReporte();            
+                imprimirReporteHosts();            
             }
         }
 
@@ -134,9 +134,6 @@ namespace PruebaLectorNessus
             {
                 // Cuando encuentra un ReportHost, lee su información.
 
-                //TODO borrar: ----
-                int numItems = 0;
-                //----------------------
                 if (lineas[numLinea].Contains(REPORT_HOST_TAG))
                 {
                     Host host = new Host();
@@ -346,7 +343,7 @@ namespace PruebaLectorNessus
 
                             // Decide si sacar todos los items o únicamente aquellos con severidad mayor a 0.
                             //if (severidad > 0 || checkbox)   TODO
-                            if (severidad > 2)
+                            if (severidad > -1)
                             {
                                 // Extraer datos del campo
                                 //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
@@ -355,7 +352,6 @@ namespace PruebaLectorNessus
 
                                 protocolo = Regex.Split(lineas[numLinea], "protocol=\"")[1];
                                 protocolo = protocolo.Split('"')[0];
-                                numItems++; //TODO borrar
 
                                 // Lee los campos dentro del report Item
                                 while (!lineas[numLinea].Contains(REPORT_ITEM_END_TAG))
@@ -536,16 +532,14 @@ namespace PruebaLectorNessus
 
                                     // Leer la descripción
                                     if (lineas[numLinea].Contains(ITEM_DESCRIPTION_TAG))
-                                    {
-                                      
+                                    {                                    
                                         // Eje: 
                                         /* <description>According to the web server&apos;s banner, the version of HP System Management Homepage (SMH) hosted on the remote web server is prior to 7.2.6. It is, therefore, affected by multiple vulnerabilities, including remote code execution vulnerabilities, in several components and third-party libraries :
                                          *
                                          * - HP SMH (XSRF)
                                          * - libcurl
                                          * - OpenSSL</description>
-                                         */
-                                        
+                                         */                                      
                                         while (true)  // Recorre todas las líneas del campo
                                         {
                                             // Existen diferentes casos. 
@@ -555,7 +549,8 @@ namespace PruebaLectorNessus
                                             // 4. La línea no tiene tags.
 
                                             string des = "";
-                                            // 1. <description>The version of GlassFish Server running on the remote host is affected by an unspecified vulnerability in the Admin Console.</description>
+
+                                            // 1. Eje: <description>The version of GlassFish Server running on the remote host is affected by an unspecified vulnerability in the Admin Console.</description>
                                             if (lineas[numLinea].Contains(ITEM_DESCRIPTION_TAG) && lineas[numLinea].Contains(END_TAG))
                                             {
                                                 des = Regex.Split(lineas[numLinea], ITEM_DESCRIPTION_TAG)[1];
@@ -590,43 +585,57 @@ namespace PruebaLectorNessus
                                     numLinea++;
                                 }
 
+                                // Agregar los datos al objeto tipo vulnerabilidad. 
+                                vulnerabilidad.descripcion = descripcion;
+                                vulnerabilidad.puerto = puerto;
+                                vulnerabilidad.protocolo = protocolo;
+                                vulnerabilidad.severidad = severidad;
+                                vulnerabilidad.bid = bid;
+                                vulnerabilidad.cve = cve;
+                                vulnerabilidad.exploitAvailable = Convert.ToBoolean(exploitAvailable);
+                                vulnerabilidad.cvssTemporalScore = cvssTemporalScore;
+                                vulnerabilidad.riskFactor = riskFactor;
+                                vulnerabilidad.pluginName = pluginName;
+                                vulnerabilidad.sinopsis = sinopsis;
+                                vulnerabilidad.solucion = solucion;
+                                vulnerabilidad.seeAlso = seeAlso;
+                                vulnerabilidad.xref = xref;
                                 
+                                // Agregar la vulnerabilidad a la lista de vulnerabilidades del host.
+                                host.vulnerabilidades.Add(vulnerabilidad);
 
-                                // TODO Crear objeto vulnerabilidad y agregarlo a la lista de vulnerabilidades 
-                                // del host.
-
-
+                                /*
                                 Console.WriteLine("--");
                                 Console.WriteLine("Descripción: " + descripcion);
-                                //Console.WriteLine("Puerto: " + puerto);
-                                //Console.WriteLine("Protocolo: " + protocolo);
-                                //Console.WriteLine("Severidad: " + severidad);
-                                //Console.WriteLine("Bid: " + bid);
-                                //Console.WriteLine("Cve: " + cve);
-                                //Console.WriteLine("Exploit available: " + exploitAvailable);
-                                //Console.WriteLine("Cvss temporal score: " + cvssTemporalScore);
-                                //Console.WriteLine("Risk factor: " + riskFactor);
-                                //Console.WriteLine("Plugin name: " + pluginName);
-                                //Console.WriteLine("Sinopsis: " + sinopsis);
-                                //Console.WriteLine("Solución: " + solucion);
-                                //Console.WriteLine("See also: " + seeAlso);
-                                //Console.WriteLine("XREF: " + xref);
+                                Console.WriteLine("Puerto: " + puerto);
+                                Console.WriteLine("Protocolo: " + protocolo);
+                                Console.WriteLine("Severidad: " + severidad);
+                                Console.WriteLine("Bid: " + bid);
+                                Console.WriteLine("Cve: " + cve);
+                                Console.WriteLine("Exploit available: " + exploitAvailable);
+                                Console.WriteLine("Cvss temporal score: " + cvssTemporalScore);
+                                Console.WriteLine("Risk factor: " + riskFactor);
+                                Console.WriteLine("Plugin name: " + pluginName);
+                                Console.WriteLine("Sinopsis: " + sinopsis);
+                                Console.WriteLine("Solución: " + solucion);
+                                Console.WriteLine("See also: " + seeAlso);
+                                Console.WriteLine("XREF: " + xref); */
                             }
                         }
 
                         numLinea++;
-                    }
-                    Console.WriteLine("Report items: " + numItems);                        
+                    }                        
                 }
 
                 numLinea++;
             }
-            //Console.WriteLine("Línea: " + numLinea + " " + lineas[numLinea]);
-            Console.WriteLine("Fin Lectura.");
-            
+            Console.WriteLine("Fin Lectura.");     
         }
 
-        private void imprimirReporte()
+        /// <summary>
+        /// Imprime en la consola un resumen de cada host del reporte.
+        /// </summary>
+        private void imprimirReporteHosts()
         {
             Console.WriteLine("Reporte: " + reporte.nombre); 
                 
@@ -639,6 +648,7 @@ namespace PruebaLectorNessus
                 Console.WriteLine("HOST_IP: " + host.hostIp);
                 Console.WriteLine("MAC: " + host.mac);
                 Console.WriteLine("NETBIOS_NAME: " + host.netbiosName);
+                Console.WriteLine("Número de vulnerabilidades: " + host.vulnerabilidades.Count);
             }
 
             Console.WriteLine("*** Fin Reporte ***");

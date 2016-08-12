@@ -12,19 +12,20 @@ namespace PruebaLectorNessus
         // Atributos
         // ----------------------------------------------------
 
-        bool exploitAvailable;
-        int severidad;
-        string puerto;
-        string protocolo;        
-        string bid;
-        string cve;
-        string cvssTemporalScore;
-        string riskFactor;
-        string pluginName;
-        string sinopsis;
-        string solucion;
-        string seeAlso;
-        string xref;
+        public bool exploitAvailable;
+        public int severidad;
+        public string puerto;
+        public string protocolo;
+        public string bid;
+        public string cve;
+        public string cvssTemporalScore;
+        public string riskFactor;
+        public string pluginName;
+        public string sinopsis;
+        public string solucion;
+        public string seeAlso;
+        public string xref;
+        public string descripcion;
 
 
         // ----------------------------------------------------
