@@ -313,7 +313,7 @@ namespace PruebaLectorNessus
                     reporte.hosts.Add(host);
 
                     // Imprimir la información en la consola. 
-                    Console.WriteLine("Línea: " + numLinea + " --- hostname:" + hostname + " ---");
+                    //Console.WriteLine("Línea: " + numLinea + " --- hostname:" + hostname + " ---");
                     //Console.WriteLine("Línea: " + numLinea + " HOST_END: " + hostEnd);
                     //Console.WriteLine("Línea: " + numLinea + " HOST_START: " + hostStart);
                     //Console.WriteLine("Línea: " + numLinea + " OS: " + operativeSystem);
@@ -350,7 +350,7 @@ namespace PruebaLectorNessus
 
                             // Decide si sacar todos los items o únicamente aquellos con severidad mayor a 0.
                             //if (severidad > 0 || checkbox)   TODO
-                            if (severidad > 3)
+                            if (severidad > -1)
                             {
                                 // Extraer datos del campo
                                 //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
@@ -742,6 +742,52 @@ namespace PruebaLectorNessus
                     temp = host.netbiosName.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
                     fila.Append(temp);
                     fila.Append(SEPARADOR);
+
+                    // Protocolo
+                    temp = vulnerabilidad.protocolo.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // Severidad (en palabras)
+                    temp = vulnerabilidad.riskFactor.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // ¿Existe exploit?
+                    temp = vulnerabilidad.exploitAvailable.ToString();
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // cve 
+                    temp = vulnerabilidad.cve.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // bid
+                    temp = vulnerabilidad.bid.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // Puntaje cvss
+                    temp = vulnerabilidad.cvssTemporalScore.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // Nombre plug in
+                    temp = vulnerabilidad.pluginName.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // See also
+                    temp = vulnerabilidad.seeAlso.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // Xref
+                    temp = vulnerabilidad.xref.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
 
                     lineas[indice] = fila.ToString();
                     indice++;
