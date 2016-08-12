@@ -69,6 +69,10 @@ namespace PruebaLectorNessus
 
         const string END_TAG = "</";
 
+        const string ENCABEZADO_VULNERABILIDADES = "Vulnerabilidad;Descripción;Solución;Ip;Puerto;Nombre;Protocolo;Severidad;Explotable;cve;bid;Puntaje cvss;Nombre del plug-in;Info adicional;xref";
+
+        const char SEPARADOR = ';';
+        
 
         // ----------------------------------------------------
         // Atributos
@@ -97,14 +101,15 @@ namespace PruebaLectorNessus
         private void buttonCargar_Click(object sender, EventArgs e)
         {
             // Show the open File dialog. If the user clicks OK, load the
-            // picture that the user chose.
+            // file that the user chose.
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 reporte = new Reporte();
                 LeerArchivo(openFileDialog1.FileName);
-                //imprimirReporteHosts();
-                //imprimirVulnerabilidades();
+                //ImprimirReporteHosts();
+                //ImprimirVulnerabilidades();
                 Console.WriteLine("*** Fin Reporte ***");
+                EscribirArchivo();
             }
         }
 
@@ -345,7 +350,7 @@ namespace PruebaLectorNessus
 
                             // Decide si sacar todos los items o únicamente aquellos con severidad mayor a 0.
                             //if (severidad > 0 || checkbox)   TODO
-                            if (severidad > -1)
+                            if (severidad > 3)
                             {
                                 // Extraer datos del campo
                                 //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
@@ -637,7 +642,7 @@ namespace PruebaLectorNessus
         /// <summary>
         /// Imprime en la consola un resumen de cada host del reporte.
         /// </summary>
-        private void imprimirReporteHosts()
+        private void ImprimirReporteHosts()
         {
             Console.WriteLine("Reporte: " + reporte.nombre); 
                 
@@ -657,7 +662,7 @@ namespace PruebaLectorNessus
         /// <summary>
         /// Imprime en la consola las vulnerabilidades de cada host.
         /// </summary>
-        private void imprimirVulnerabilidades()
+        private void ImprimirVulnerabilidades()
         {
             foreach (Host host in reporte.hosts)
             {
@@ -679,24 +684,72 @@ namespace PruebaLectorNessus
                     Console.WriteLine("See also: " + vulnerabilidad.seeAlso);
                     Console.WriteLine("XREF: " + vulnerabilidad.xref);
                     Console.WriteLine("---  ---  ---");
-
-                    /*
-                    Console.WriteLine("Descripción: " + descripcion);
-                    Console.WriteLine("Puerto: " + puerto);
-                    Console.WriteLine("Protocolo: " + protocolo);
-                    Console.WriteLine("Severidad: " + severidad);
-                    Console.WriteLine("Bid: " + bid);
-                    Console.WriteLine("Cve: " + cve);
-                    Console.WriteLine("Exploit available: " + exploitAvailable);
-                    Console.WriteLine("Cvss temporal score: " + cvssTemporalScore);
-                    Console.WriteLine("Risk factor: " + riskFactor);
-                    Console.WriteLine("Plugin name: " + pluginName);
-                    Console.WriteLine("Sinopsis: " + sinopsis);
-                    Console.WriteLine("Solución: " + solucion);
-                    Console.WriteLine("See also: " + seeAlso);
-                    Console.WriteLine("XREF: " + xref); */
                 }
             }
+        }
+        
+        /// <summary>
+        /// Escribe un archivo csv donde cada fila representa una vulnerabilidad.
+        /// Se debe ejecutar después de haber leido un archivo.
+        /// </summary>
+        private void EscribirArchivo()
+        {
+            // El número total de filas que debe tener el archivo de salida.
+            int tamaño = 1;   // El encabezado
+            int indice = 1;
+            foreach (Host host in reporte.hosts)
+            {
+                tamaño += host.vulnerabilidades.Count;
+            }
+
+            string[] lineas = new String[tamaño];
+            lineas[0] = ENCABEZADO_VULNERABILIDADES;
+
+            // Recorrer todas las vulnerabilidades del reporte.
+            foreach (Host host in reporte.hosts)
+            {
+                foreach (Vulnerabilidad vulnerabilidad in host.vulnerabilidades)
+                {
+                    StringBuilder fila = new StringBuilder();
+                    string temp = "";
+
+                    // Sinopsis
+                    temp = vulnerabilidad.sinopsis.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // Descripción
+                    temp = vulnerabilidad.descripcion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // Solución
+                    temp = vulnerabilidad.solucion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // ip
+                    temp = host.hostIp.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // puerto
+                    temp = vulnerabilidad.puerto.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    // Nombre de bios
+                    temp = host.netbiosName.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    fila.Append(temp);
+                    fila.Append(SEPARADOR);
+
+                    lineas[indice] = fila.ToString();
+                    indice++;
+                }
+            }
+            System.IO.File.WriteAllLines(reporte.nombre+".cvs", lineas);
+
+            Console.WriteLine("Archivo \""+reporte.nombre+"\" creado.");
         } 
             
     }
