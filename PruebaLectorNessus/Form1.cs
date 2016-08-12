@@ -102,7 +102,9 @@ namespace PruebaLectorNessus
             {
                 reporte = new Reporte();
                 LeerArchivo(openFileDialog1.FileName);
-                imprimirReporteHosts();            
+                //imprimirReporteHosts();
+                //imprimirVulnerabilidades();
+                Console.WriteLine("*** Fin Reporte ***");
             }
         }
 
@@ -649,10 +651,53 @@ namespace PruebaLectorNessus
                 Console.WriteLine("MAC: " + host.mac);
                 Console.WriteLine("NETBIOS_NAME: " + host.netbiosName);
                 Console.WriteLine("Número de vulnerabilidades: " + host.vulnerabilidades.Count);
-            }
-
-            Console.WriteLine("*** Fin Reporte ***");
+            }           
         }
+
+        /// <summary>
+        /// Imprime en la consola las vulnerabilidades de cada host.
+        /// </summary>
+        private void imprimirVulnerabilidades()
+        {
+            foreach (Host host in reporte.hosts)
+            {
+                Console.WriteLine("--- hostname:" + host.hostname + " ---");
+                foreach (Vulnerabilidad vulnerabilidad in host.vulnerabilidades)
+                {
+                    Console.WriteLine("Sinopsis: " + vulnerabilidad.sinopsis);
+                    Console.WriteLine("Descripción: " + vulnerabilidad.descripcion);
+                    Console.WriteLine("Puerto: " + vulnerabilidad.puerto);
+                    Console.WriteLine("Protocolo: " + vulnerabilidad.protocolo);
+                    Console.WriteLine("Severidad: " + vulnerabilidad.severidad);
+                    Console.WriteLine("Bid: " + vulnerabilidad.bid);
+                    Console.WriteLine("Cve: " + vulnerabilidad.cve);
+                    Console.WriteLine("Exploit available: " + vulnerabilidad.exploitAvailable);
+                    Console.WriteLine("Cvss temporal score: " + vulnerabilidad.cvssTemporalScore);
+                    Console.WriteLine("Risk factor: " + vulnerabilidad.riskFactor);
+                    Console.WriteLine("Plugin name: " + vulnerabilidad.pluginName);
+                    Console.WriteLine("Solución: " + vulnerabilidad.solucion);
+                    Console.WriteLine("See also: " + vulnerabilidad.seeAlso);
+                    Console.WriteLine("XREF: " + vulnerabilidad.xref);
+                    Console.WriteLine("---  ---  ---");
+
+                    /*
+                    Console.WriteLine("Descripción: " + descripcion);
+                    Console.WriteLine("Puerto: " + puerto);
+                    Console.WriteLine("Protocolo: " + protocolo);
+                    Console.WriteLine("Severidad: " + severidad);
+                    Console.WriteLine("Bid: " + bid);
+                    Console.WriteLine("Cve: " + cve);
+                    Console.WriteLine("Exploit available: " + exploitAvailable);
+                    Console.WriteLine("Cvss temporal score: " + cvssTemporalScore);
+                    Console.WriteLine("Risk factor: " + riskFactor);
+                    Console.WriteLine("Plugin name: " + pluginName);
+                    Console.WriteLine("Sinopsis: " + sinopsis);
+                    Console.WriteLine("Solución: " + solucion);
+                    Console.WriteLine("See also: " + seeAlso);
+                    Console.WriteLine("XREF: " + xref); */
+                }
+            }
+        } 
             
     }
 }
