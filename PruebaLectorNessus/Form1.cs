@@ -20,57 +20,45 @@ namespace PruebaLectorNessus
         // ----------------------------------------------------
 
         const string REPORT_NAME_TAG = "<Report name=\"";
-
         const string REPORT_END_TAG = "</Report>";
-
         const string REPORT_HOST_TAG = "<ReportHost";
-
         const string REPORT_HOST_END_TAG = "</ReportHost>";
-
         const string HOST_PROPERTIES_END_TAG = "</HostProperties>";
-
         const string HOST_END_TAG = "<tag name=\"HOST_END\">";
-
         const string HOST_START_TAG = "<tag name=\"HOST_START\">";
-
         const string HOST_OS_TAG = "<tag name=\"operating-system\">";
-
         const string HOST_MAC_TAG = "<tag name=\"mac-address\">";
-
         const string HOST_IP_TAG = "<tag name=\"host-ip\">";
-
         const string HOST_NETBIOS_TAG = "<tag name=\"netbios-name\">";
-
         const string REPORT_ITEM_TAG = "<ReportItem";
-
         const string REPORT_ITEM_END_TAG = "</ReportItem>";
-
         const string ITEM_BID_TAG = "<bid>";
-
         const string ITEM_CVE_TAG = "<cve>";
-
         const string ITEM_EXPLOIT_AVAILABLE_TAG = "<exploit_available>";
-
         const string ITEM_CVSS_SCORE_TAG = "<cvss_temporal_score>";
-
         const string ITEM_RISK_FACTOR_TAG = "<risk_factor>";
-
         const string ITEM_PLUGIN_NAME_TAG = "<plugin_name>";
-
         const string ITEM_SYNOPSIS_TAG = "<synopsis>";
-
         const string ITEM_SOLUTION_TAG = "<solution>";
-
         const string ITEM_SEE_ALSO_TAG = "<see_also>";
-
         const string ITEM_XREF_TAG = "<xref>";
-
         const string ITEM_DESCRIPTION_TAG = "<description>";
-
         const string END_TAG = "</";
 
         const string ENCABEZADO_VULNERABILIDADES = "Vulnerabilidad;Descripción;Solución;Ip;Puerto;Nombre;Protocolo;Severidad;Explotable;cve;bid;Puntaje cvss;Nombre del plug-in;Info adicional;xref";
-
+        const string ENCABEZADO_SINOPSIS = "Vulnerabilidad";
+        const string ENCABEZADO_DESCRIPCION = "Descripción";
+        const string ENCABEZADO_SOLUCION = "Solución";
+        const string ENCABEZADO_IP = "Dirección IP";
+        const string ENCABEZADO_PUERTO = "Puerto" ;
+        const string ENCABEZADO_NET_BIOS_NAME = "Nombre" ;
+        const string ENCABEZADO_PROTOCOLO = "Protocolo";
+        const string ENCABEZADO_SEVERIDAD = "Severidad";
+        const string ENCABEZADO_EXPLOIT_AVAILABLE = "Explotable" ;
+        const string ENCABEZADO_CVE = "cve";
+        const string ENCABEZADO_BID = "bid";
+        const string ENCABEZADO_CVSS_SCORE = "Puntaje cvss";
+        const string ENCABEZADO_PLUG_IN_NAME = "Nombre del plug-in";
         const char SEPARADOR = ';';
         
 
@@ -126,7 +114,7 @@ namespace PruebaLectorNessus
         /// <param name="fileName"></param>
         private void LeerArchivo(string fileName)
         {
-            Console.WriteLine("Leyendo archivo...");
+            //Console.WriteLine("Leyendo archivo...");
             LabelMensaje.Text = "Leyendo  archivo...";
             LabelMensaje.Refresh();
 
@@ -641,7 +629,7 @@ namespace PruebaLectorNessus
 
                 numLinea++;
             }
-            Console.WriteLine("Fin Lectura.");              
+            //Console.WriteLine("Fin Lectura.");              
         }
 
         /// <summary>
@@ -723,22 +711,22 @@ namespace PruebaLectorNessus
                     string temp = "";
 
                     // Sinopsis
-                    temp = vulnerabilidad.sinopsis.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    temp = vulnerabilidad.sinopsis.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
                     fila.Append(temp);
                     fila.Append(SEPARADOR);
 
                     // Descripción
-                    temp = vulnerabilidad.descripcion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    temp = vulnerabilidad.descripcion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
                     fila.Append(temp);
                     fila.Append(SEPARADOR);
 
                     // Solución
-                    temp = vulnerabilidad.solucion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    temp = vulnerabilidad.solucion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
                     fila.Append(temp);
                     fila.Append(SEPARADOR);
 
                     // ip
-                    temp = host.hostIp.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                    temp = host.hostIp.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
                     fila.Append(temp);
                     fila.Append(SEPARADOR);
 
@@ -804,8 +792,8 @@ namespace PruebaLectorNessus
             }
             System.IO.File.WriteAllLines(reporte.nombre+".cvs", lineas);
 
-            Console.WriteLine("Archivo \""+reporte.nombre+".cvs\" creado.");
-            LabelMensaje.Text = "Archivo \"" + reporte.nombre + ".cvs\" creado en la misma carpeta que el ejecutable.";
+            //Console.WriteLine("Archivo \""+reporte.nombre+".cvs\" creado.");
+            LabelMensaje.Text = "Archivo \"" + reporte.nombre + ".cvs\" creado en la misma carpeta que este ejecutable.";
         }
 
         private void buttonEjecutar_Click(object sender, EventArgs e)
@@ -816,5 +804,6 @@ namespace PruebaLectorNessus
             //ImprimirVulnerabilidades();
             EscribirArchivo();
         }
+
     }
 }
