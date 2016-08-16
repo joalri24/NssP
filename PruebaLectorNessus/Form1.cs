@@ -108,11 +108,13 @@ namespace PruebaLectorNessus
             {
                 reporte = new Reporte();
                 rutaArchivo = openFileDialog1.FileName;
+
+                // Actualiza la interfaz
+                buttonEjecutar.Enabled = true;
                 textBoxRutaArchivo.Text = rutaArchivo;
-                //LeerArchivo(openFileDialog1.FileName);
-                //ImprimirReporteHosts();
-                //ImprimirVulnerabilidades();
-                //EscribirArchivo();
+                string[] carpetas = rutaArchivo.Split('\\');
+                string nombre = carpetas[carpetas.Length - 1];
+                LabelMensaje.Text = "Archivo \""+ nombre +"\" seleccionado. Oprimir el botón Ejecutar para procesarlo.";
             }
         }
  
@@ -126,6 +128,8 @@ namespace PruebaLectorNessus
         private void LeerArchivo(string fileName)
         {
             Console.WriteLine("Leyendo archivo...");
+            LabelMensaje.Text = "Leyendo  archivo...";
+            LabelMensaje.Refresh();
 
             String[] lineas = File.ReadAllLines(fileName);          
             int numLinea = 0;
@@ -640,7 +644,7 @@ namespace PruebaLectorNessus
 
                 numLinea++;
             }
-            Console.WriteLine("Fin Lectura.");     
+            Console.WriteLine("Fin Lectura.");              
         }
 
         /// <summary>
@@ -698,6 +702,10 @@ namespace PruebaLectorNessus
         /// </summary>
         private void EscribirArchivo()
         {
+
+            LabelMensaje.Text = "Escribiendo archivo de salida...";
+            LabelMensaje.Refresh();
+
             // El número total de filas que debe tener el archivo de salida.
             int tamaño = 1;   // El encabezado
             int indice = 1;
@@ -800,6 +808,7 @@ namespace PruebaLectorNessus
             System.IO.File.WriteAllLines(reporte.nombre+".cvs", lineas);
 
             Console.WriteLine("Archivo \""+reporte.nombre+".cvs\" creado.");
+            LabelMensaje.Text = "Archivo \"" + reporte.nombre + ".cvs\" creado en la misma carpeta que el ejecutable.";
         }
 
         private void buttonEjecutar_Click(object sender, EventArgs e)

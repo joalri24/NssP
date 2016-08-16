@@ -33,7 +33,7 @@
             this.splitContainerOpciones = new System.Windows.Forms.SplitContainer();
             this.groupBoxArchivo = new System.Windows.Forms.GroupBox();
             this.groupBoxColumnas = new System.Windows.Forms.GroupBox();
-            this.Mensaje = new System.Windows.Forms.Label();
+            this.LabelMensaje = new System.Windows.Forms.Label();
             this.textBoxRutaArchivo = new System.Windows.Forms.TextBox();
             this.buttonExaminar = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
@@ -67,7 +67,7 @@
             // 
             // splitContainerFondo.Panel2
             // 
-            this.splitContainerFondo.Panel2.Controls.Add(this.Mensaje);
+            this.splitContainerFondo.Panel2.Controls.Add(this.LabelMensaje);
             this.splitContainerFondo.Size = new System.Drawing.Size(721, 342);
             this.splitContainerFondo.SplitterDistance = 294;
             this.splitContainerFondo.TabIndex = 0;
@@ -113,14 +113,14 @@
             this.groupBoxColumnas.TabStop = false;
             this.groupBoxColumnas.Text = "Campos";
             // 
-            // Mensaje
+            // LabelMensaje
             // 
-            this.Mensaje.AutoSize = true;
-            this.Mensaje.Location = new System.Drawing.Point(12, 10);
-            this.Mensaje.Name = "Mensaje";
-            this.Mensaje.Size = new System.Drawing.Size(365, 13);
-            this.Mensaje.TabIndex = 0;
-            this.Mensaje.Text = "Seleccionar un archivo nessus y oprimir el botón \"Ejecutar\" para procesarlo.";
+            this.LabelMensaje.AutoSize = true;
+            this.LabelMensaje.Location = new System.Drawing.Point(12, 10);
+            this.LabelMensaje.Name = "LabelMensaje";
+            this.LabelMensaje.Size = new System.Drawing.Size(365, 13);
+            this.LabelMensaje.TabIndex = 0;
+            this.LabelMensaje.Text = "Seleccionar un archivo nessus y oprimir el botón \"Ejecutar\" para procesarlo.";
             // 
             // textBoxRutaArchivo
             // 
@@ -152,6 +152,7 @@
             // 
             // buttonEjecutar
             // 
+            this.buttonEjecutar.Enabled = false;
             this.buttonEjecutar.Location = new System.Drawing.Point(365, 265);
             this.buttonEjecutar.Name = "buttonEjecutar";
             this.buttonEjecutar.Size = new System.Drawing.Size(75, 23);
@@ -191,7 +192,7 @@
         private System.Windows.Forms.GroupBox groupBoxArchivo;
         private System.Windows.Forms.TextBox textBoxRutaArchivo;
         private System.Windows.Forms.GroupBox groupBoxColumnas;
-        private System.Windows.Forms.Label Mensaje;
+        private System.Windows.Forms.Label LabelMensaje;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button buttonExaminar;
         private System.Windows.Forms.Button buttonEjecutar;
