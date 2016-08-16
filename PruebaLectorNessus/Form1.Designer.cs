@@ -36,7 +36,7 @@
             this.LabelMensaje = new System.Windows.Forms.Label();
             this.textBoxRutaArchivo = new System.Windows.Forms.TextBox();
             this.buttonExaminar = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBoxSeveridad0 = new System.Windows.Forms.CheckBox();
             this.buttonEjecutar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFondo)).BeginInit();
             this.splitContainerFondo.Panel1.SuspendLayout();
@@ -92,7 +92,7 @@
             // groupBoxArchivo
             // 
             this.groupBoxArchivo.Controls.Add(this.buttonEjecutar);
-            this.groupBoxArchivo.Controls.Add(this.checkBox1);
+            this.groupBoxArchivo.Controls.Add(this.checkBoxSeveridad0);
             this.groupBoxArchivo.Controls.Add(this.buttonExaminar);
             this.groupBoxArchivo.Controls.Add(this.textBoxRutaArchivo);
             this.groupBoxArchivo.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -140,15 +140,15 @@
             this.buttonExaminar.UseVisualStyleBackColor = true;
             this.buttonExaminar.Click += new System.EventHandler(this.SeleccionarArchivo);
             // 
-            // checkBox1
+            // checkBoxSeveridad0
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(12, 101);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(163, 17);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Incluir items con severidad 0.";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBoxSeveridad0.AutoSize = true;
+            this.checkBoxSeveridad0.Location = new System.Drawing.Point(12, 101);
+            this.checkBoxSeveridad0.Name = "checkBoxSeveridad0";
+            this.checkBoxSeveridad0.Size = new System.Drawing.Size(163, 17);
+            this.checkBoxSeveridad0.TabIndex = 2;
+            this.checkBoxSeveridad0.Text = "Incluir items con severidad 0.";
+            this.checkBoxSeveridad0.UseVisualStyleBackColor = true;
             // 
             // buttonEjecutar
             // 
@@ -193,7 +193,7 @@
         private System.Windows.Forms.TextBox textBoxRutaArchivo;
         private System.Windows.Forms.GroupBox groupBoxColumnas;
         private System.Windows.Forms.Label LabelMensaje;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBoxSeveridad0;
         private System.Windows.Forms.Button buttonExaminar;
         private System.Windows.Forms.Button buttonEjecutar;
     }

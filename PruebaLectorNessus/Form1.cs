@@ -106,7 +106,6 @@ namespace PruebaLectorNessus
             // file that the user chose.
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                reporte = new Reporte();
                 rutaArchivo = openFileDialog1.FileName;
 
                 // Actualiza la interfaz
@@ -356,9 +355,8 @@ namespace PruebaLectorNessus
                             strSeveridad = strSeveridad.Split('"')[0];
                             severidad = Convert.ToInt16(strSeveridad);
 
-                            // Decide si sacar todos los items o únicamente aquellos con severidad mayor a 0.
-                            //if (severidad > 0 || checkbox)   TODO
-                            if (severidad > -1)
+                            // Saca todos los items o únicamente aquellos con severidad mayor a 0 según la elección del usuario.
+                            if (severidad > 0 || checkBoxSeveridad0.Checked) 
                             {
                                 // Extraer datos del campo
                                 //Eje: <ReportItem port="1027" svc_name="dce-rpc" protocol="tcp" severity="2" pluginID="90510" pluginName="MS16-047: Security Update for SAM and LSAD Remote Protocols (3148527) (Badlock) (uncredentialed check)" pluginFamily="Windows">
@@ -637,7 +635,6 @@ namespace PruebaLectorNessus
                                 Console.WriteLine("XREF: " + xref); */
                             }
                         }
-
                         numLinea++;
                     }                        
                 }
@@ -813,6 +810,7 @@ namespace PruebaLectorNessus
 
         private void buttonEjecutar_Click(object sender, EventArgs e)
         {
+            reporte = new Reporte();
             LeerArchivo(rutaArchivo);
             //ImprimirReporteHosts();
             //ImprimirVulnerabilidades();
