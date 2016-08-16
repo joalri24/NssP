@@ -79,7 +79,7 @@ namespace PruebaLectorNessus
         // ----------------------------------------------------
 
         private Reporte reporte;
-
+        private string rutaArchivo;
         
         // ----------------------------------------------------
         // Constructor
@@ -87,31 +87,35 @@ namespace PruebaLectorNessus
 
         /// <summary>
         /// Método constructor.
-        /// Inicializa el formulario y la lista de hosts;
+        /// Inicializa el formulario;
         /// </summary>
         public Form1()
         {
-            InitializeComponent();           
+            InitializeComponent();
+            rutaArchivo = null;
+            reporte = null;          
         }
 
         // ----------------------------------------------------
         // Métodos
         // ----------------------------------------------------
 
-        private void buttonCargar_Click(object sender, EventArgs e)
+        private void SeleccionarArchivo(object sender, EventArgs e)
         {
             // Show the open File dialog. If the user clicks OK, load the
             // file that the user chose.
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 reporte = new Reporte();
-                LeerArchivo(openFileDialog1.FileName);
+                rutaArchivo = openFileDialog1.FileName;
+                textBoxRutaArchivo.Text = rutaArchivo;
+                //LeerArchivo(openFileDialog1.FileName);
                 //ImprimirReporteHosts();
                 //ImprimirVulnerabilidades();
-                Console.WriteLine("*** Fin Reporte ***");
-                EscribirArchivo();
+                //EscribirArchivo();
             }
         }
+ 
 
         /// <summary>
         /// Lee el archivo línea por línea y extrae la información correspondiente.
@@ -795,8 +799,15 @@ namespace PruebaLectorNessus
             }
             System.IO.File.WriteAllLines(reporte.nombre+".cvs", lineas);
 
-            Console.WriteLine("Archivo \""+reporte.nombre+"\" creado.");
-        } 
-            
+            Console.WriteLine("Archivo \""+reporte.nombre+".cvs\" creado.");
+        }
+
+        private void buttonEjecutar_Click(object sender, EventArgs e)
+        {
+            LeerArchivo(rutaArchivo);
+            //ImprimirReporteHosts();
+            //ImprimirVulnerabilidades();
+            EscribirArchivo();
+        }
     }
 }
