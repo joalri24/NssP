@@ -59,6 +59,8 @@ namespace PruebaLectorNessus
         const string ENCABEZADO_BID = "bid";
         const string ENCABEZADO_CVSS_SCORE = "Puntaje cvss";
         const string ENCABEZADO_PLUG_IN_NAME = "Nombre del plug-in";
+        const string ENCABEZADO_SEE_ALSO = "Información adicional";
+        const string ENCABEZADO_XREF = "xref";
         const char SEPARADOR = ';';
         
 
@@ -700,91 +702,243 @@ namespace PruebaLectorNessus
             }
 
             string[] lineas = new String[tamaño];
-            lineas[0] = ENCABEZADO_VULNERABILIDADES;
+  
+            // Escribe el encabezado
+            StringBuilder fila = new StringBuilder();
+            // Sinopsis
+            if (checkBoxSinopsis.Checked)                 
+            {
+                fila.Append(ENCABEZADO_SINOPSIS);
+                fila.Append(SEPARADOR);
+            }
+
+            // Descripción
+            if (checkBoxDescripcion.Checked)              
+            {
+                fila.Append(ENCABEZADO_DESCRIPCION);
+                fila.Append(SEPARADOR);
+            }
+
+            // Solución
+            if (checkBoxSolucion.Checked)                 
+            {
+                fila.Append(ENCABEZADO_SOLUCION);
+                fila.Append(SEPARADOR);
+            }
+
+            // IP
+            if (checkBoxIP.Checked)                       
+            {
+                fila.Append(ENCABEZADO_IP);
+                fila.Append(SEPARADOR);
+            }
+
+            // Puerto
+            if (checkBoxPuerto.Checked)                   
+            {
+                fila.Append(ENCABEZADO_PUERTO);
+                fila.Append(SEPARADOR);
+            }
+
+            // Net-bios name
+            if (checkBoxNetBios.Checked)                  
+            {
+                fila.Append(ENCABEZADO_NET_BIOS_NAME);
+                fila.Append(SEPARADOR);
+            }
+
+            // Protocolo
+            if (checkBoxProtocolo.Checked)              
+            {
+                fila.Append(ENCABEZADO_PROTOCOLO);
+                fila.Append(SEPARADOR);
+            }
+
+            // Risk factor (severidad)
+            if (checkBoxSeveridad.Checked)
+            {
+                fila.Append(ENCABEZADO_SEVERIDAD);
+                fila.Append(SEPARADOR);
+            }
+
+            // Explotable
+            if (checkBoxExploit.Checked)
+            {
+                fila.Append(ENCABEZADO_EXPLOIT_AVAILABLE);
+                fila.Append(SEPARADOR);
+            }
+
+            // cve
+            if (checkBoxCve.Checked)
+            {
+                fila.Append(ENCABEZADO_CVE);
+                fila.Append(SEPARADOR);
+            }
+
+            // BID
+            if (checkBoxBid.Checked)
+            {
+                fila.Append(ENCABEZADO_BID);
+                fila.Append(SEPARADOR);
+            }
+
+            // cvss score 
+            if (checkBoxCvss.Checked)
+            {
+                fila.Append(ENCABEZADO_CVSS_SCORE);
+                fila.Append(SEPARADOR);
+            }
+
+            // Plug-in name
+            if (checkBoxPlugin.Checked)
+            {
+                fila.Append(ENCABEZADO_PLUG_IN_NAME);
+                fila.Append(SEPARADOR);
+            }
+
+            // See Also
+            if (checkBoxInfoAdicional.Checked)
+            {
+                fila.Append(ENCABEZADO_SEE_ALSO);
+                fila.Append(SEPARADOR);
+            }
+
+            // Xref
+            if (checkBoxXref.Checked)
+            {
+                fila.Append(ENCABEZADO_XREF);
+                fila.Append(SEPARADOR);
+            }
+
+            lineas[0] = fila.ToString();
 
             // Recorrer todas las vulnerabilidades del reporte.
             foreach (Host host in reporte.hosts)
             {
                 foreach (Vulnerabilidad vulnerabilidad in host.vulnerabilidades)
                 {
-                    StringBuilder fila = new StringBuilder();
+                    fila = new StringBuilder();
                     string temp = "";
 
                     // Sinopsis
-                    temp = vulnerabilidad.sinopsis.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxSinopsis.Checked)
+                    {
+                        temp = vulnerabilidad.sinopsis.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // Descripción
-                    temp = vulnerabilidad.descripcion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxDescripcion.Checked)
+                    {
+                        temp = vulnerabilidad.descripcion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // Solución
-                    temp = vulnerabilidad.solucion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxSolucion.Checked)
+                    {
+                        temp = vulnerabilidad.solucion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // ip
-                    temp = host.hostIp.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxIP.Checked)
+                    {
+                        temp = host.hostIp.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // puerto
-                    temp = vulnerabilidad.puerto.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxPuerto.Checked)
+                    {
+                        temp = vulnerabilidad.puerto.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // Nombre de bios
-                    temp = host.netbiosName.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxNetBios.Checked)
+                    {
+                        temp = host.netbiosName.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // Protocolo
-                    temp = vulnerabilidad.protocolo.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxProtocolo.Checked)
+                    {
+                        temp = vulnerabilidad.protocolo.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // Severidad (en palabras)
-                    temp = vulnerabilidad.riskFactor.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxSeveridad.Checked)
+                    {
+                        temp = vulnerabilidad.riskFactor.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // ¿Existe exploit?
-                    temp = vulnerabilidad.exploitAvailable.ToString();
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxExploit.Checked)
+                    {
+                        temp = vulnerabilidad.exploitAvailable.ToString();
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // cve 
-                    temp = vulnerabilidad.cve.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxCve.Checked)
+                    {
+                        temp = vulnerabilidad.cve.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // bid
-                    temp = vulnerabilidad.bid.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxBid.Checked)
+                    {
+                        temp = vulnerabilidad.bid.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // Puntaje cvss
-                    temp = vulnerabilidad.cvssTemporalScore.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxCvss.Checked)
+                    {
+                        temp = vulnerabilidad.cvssTemporalScore.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // Nombre plug in
-                    temp = vulnerabilidad.pluginName.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxPlugin.Checked)
+                    {
+                        temp = vulnerabilidad.pluginName.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // See also
-                    temp = vulnerabilidad.seeAlso.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
+                    if (checkBoxInfoAdicional.Checked)
+                    {
+                        temp = vulnerabilidad.seeAlso.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     // Xref
-                    temp = vulnerabilidad.xref.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
-                    fila.Append(temp);
-                    fila.Append(SEPARADOR);
-
+                    if (checkBoxXref.Checked)
+                    {
+                        temp = vulnerabilidad.xref.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
 
                     lineas[indice] = fila.ToString();
                     indice++;
