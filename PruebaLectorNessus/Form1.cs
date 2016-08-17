@@ -61,6 +61,8 @@ namespace PruebaLectorNessus
         const string ENCABEZADO_PLUG_IN_NAME = "Nombre del plug-in";
         const string ENCABEZADO_SEE_ALSO = "Información adicional";
         const string ENCABEZADO_XREF = "xref";
+        const string ENCABEZADO_MAC = "Dirección mac";
+        const string ENCABEZADO_SISTEMA_OPERATIVO = "Sistema operativo";
         const char SEPARADOR = ';';
         
 
@@ -810,6 +812,20 @@ namespace PruebaLectorNessus
                 fila.Append(SEPARADOR);
             }
 
+            // Dirección mac
+            if (checkBoxMac.Checked)
+            {
+                fila.Append(ENCABEZADO_MAC);
+                fila.Append(SEPARADOR);
+            }
+
+            // Sistema Operativo
+            if (checkBoxOS.Checked)
+            {
+                fila.Append(ENCABEZADO_SISTEMA_OPERATIVO);
+                fila.Append(SEPARADOR);
+            }
+
             lineas[0] = fila.ToString();
 
             // Recorrer todas las vulnerabilidades del reporte.
@@ -940,14 +956,32 @@ namespace PruebaLectorNessus
                         fila.Append(SEPARADOR);
                     }
 
+                    // mac
+                    if (checkBoxMac.Checked)
+                    {
+                        temp = host.mac.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
+
+                    // Sistema operativo
+                    if (checkBoxOS.Checked)
+                    {
+                        temp = host.operativeSystem.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el carater separador.
+                        fila.Append(temp);
+                        fila.Append(SEPARADOR);
+                    }
+
                     lineas[indice] = fila.ToString();
                     indice++;
                 }
             }
-            System.IO.File.WriteAllLines(reporte.nombre+".cvs", lineas);
+            // Si el campo del nombre de salida esta vacío, utiliza el nombre que aparece dentro del reporte
+            string nombre = (textBoxSalida.Text == null || textBoxSalida.Text == "") ? reporte.nombre : textBoxSalida.Text;
+            System.IO.File.WriteAllLines(nombre + ".cvs", lineas);
 
             //Console.WriteLine("Archivo \""+reporte.nombre+".cvs\" creado.");
-            LabelMensaje.Text = "Archivo \"" + reporte.nombre + ".cvs\" creado en la misma carpeta que este ejecutable.";
+            LabelMensaje.Text = "Archivo \"" + nombre + ".cvs\" creado en la misma carpeta donde se encuentra este ejecutable.";
         }
 
         private void buttonEjecutar_Click(object sender, EventArgs e)
@@ -958,6 +992,5 @@ namespace PruebaLectorNessus
             //ImprimirVulnerabilidades();
             EscribirArchivo();
         }
-
     }
 }

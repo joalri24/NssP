@@ -32,23 +32,16 @@
             this.splitContainerFondo = new System.Windows.Forms.SplitContainer();
             this.splitContainerOpciones = new System.Windows.Forms.SplitContainer();
             this.groupBoxArchivo = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxSalida = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.buttonEjecutar = new System.Windows.Forms.Button();
             this.checkBoxSeveridad0 = new System.Windows.Forms.CheckBox();
             this.buttonExaminar = new System.Windows.Forms.Button();
             this.textBoxRutaArchivo = new System.Windows.Forms.TextBox();
             this.groupBoxColumnas = new System.Windows.Forms.GroupBox();
-            this.checkBoxSolucion = new System.Windows.Forms.CheckBox();
-            this.checkBoxExploit = new System.Windows.Forms.CheckBox();
-            this.checkBoxProtocolo = new System.Windows.Forms.CheckBox();
-            this.checkBoxPuerto = new System.Windows.Forms.CheckBox();
-            this.checkBoxSinopsis = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.LabelMensaje = new System.Windows.Forms.Label();
-            this.checkBoxPlugin = new System.Windows.Forms.CheckBox();
-            this.checkBoxXref = new System.Windows.Forms.CheckBox();
-            this.checkBoxBid = new System.Windows.Forms.CheckBox();
-            this.checkBoxMac = new System.Windows.Forms.CheckBox();
             this.checkBoxInfoAdicional = new System.Windows.Forms.CheckBox();
+            this.checkBoxSolucion = new System.Windows.Forms.CheckBox();
             this.checkBoxOS = new System.Windows.Forms.CheckBox();
             this.checkBoxCvss = new System.Windows.Forms.CheckBox();
             this.checkBoxIP = new System.Windows.Forms.CheckBox();
@@ -56,6 +49,17 @@
             this.checkBoxSeveridad = new System.Windows.Forms.CheckBox();
             this.checkBoxNetBios = new System.Windows.Forms.CheckBox();
             this.checkBoxDescripcion = new System.Windows.Forms.CheckBox();
+            this.checkBoxMac = new System.Windows.Forms.CheckBox();
+            this.checkBoxPlugin = new System.Windows.Forms.CheckBox();
+            this.checkBoxXref = new System.Windows.Forms.CheckBox();
+            this.checkBoxBid = new System.Windows.Forms.CheckBox();
+            this.checkBoxExploit = new System.Windows.Forms.CheckBox();
+            this.checkBoxProtocolo = new System.Windows.Forms.CheckBox();
+            this.checkBoxPuerto = new System.Windows.Forms.CheckBox();
+            this.checkBoxSinopsis = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.LabelMensaje = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFondo)).BeginInit();
             this.splitContainerFondo.Panel1.SuspendLayout();
             this.splitContainerFondo.Panel2.SuspendLayout();
@@ -110,6 +114,10 @@
             // 
             // groupBoxArchivo
             // 
+            this.groupBoxArchivo.Controls.Add(this.label4);
+            this.groupBoxArchivo.Controls.Add(this.label3);
+            this.groupBoxArchivo.Controls.Add(this.textBoxSalida);
+            this.groupBoxArchivo.Controls.Add(this.label2);
             this.groupBoxArchivo.Controls.Add(this.buttonEjecutar);
             this.groupBoxArchivo.Controls.Add(this.checkBoxSeveridad0);
             this.groupBoxArchivo.Controls.Add(this.buttonExaminar);
@@ -121,6 +129,32 @@
             this.groupBoxArchivo.TabIndex = 0;
             this.groupBoxArchivo.TabStop = false;
             this.groupBoxArchivo.Text = "Archivo";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 120);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(133, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Nombre archivo de salida: ";
+            // 
+            // textBoxSalida
+            // 
+            this.textBoxSalida.Location = new System.Drawing.Point(145, 117);
+            this.textBoxSalida.Name = "textBoxSalida";
+            this.textBoxSalida.Size = new System.Drawing.Size(208, 20);
+            this.textBoxSalida.TabIndex = 5;
+            this.textBoxSalida.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 87);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(100, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Archivo de entrada:";
             // 
             // buttonEjecutar
             // 
@@ -136,7 +170,7 @@
             // checkBoxSeveridad0
             // 
             this.checkBoxSeveridad0.AutoSize = true;
-            this.checkBoxSeveridad0.Location = new System.Drawing.Point(12, 144);
+            this.checkBoxSeveridad0.Location = new System.Drawing.Point(6, 222);
             this.checkBoxSeveridad0.Name = "checkBoxSeveridad0";
             this.checkBoxSeveridad0.Size = new System.Drawing.Size(163, 17);
             this.checkBoxSeveridad0.TabIndex = 2;
@@ -155,15 +189,16 @@
             // 
             // textBoxRutaArchivo
             // 
-            this.textBoxRutaArchivo.Location = new System.Drawing.Point(6, 84);
+            this.textBoxRutaArchivo.Location = new System.Drawing.Point(115, 84);
             this.textBoxRutaArchivo.Name = "textBoxRutaArchivo";
             this.textBoxRutaArchivo.ReadOnly = true;
-            this.textBoxRutaArchivo.Size = new System.Drawing.Size(347, 20);
+            this.textBoxRutaArchivo.Size = new System.Drawing.Size(238, 20);
             this.textBoxRutaArchivo.TabIndex = 0;
             // 
             // groupBoxColumnas
             // 
             this.groupBoxColumnas.Controls.Add(this.checkBoxInfoAdicional);
+            this.groupBoxColumnas.Controls.Add(this.checkBoxSolucion);
             this.groupBoxColumnas.Controls.Add(this.checkBoxOS);
             this.groupBoxColumnas.Controls.Add(this.checkBoxCvss);
             this.groupBoxColumnas.Controls.Add(this.checkBoxIP);
@@ -175,7 +210,6 @@
             this.groupBoxColumnas.Controls.Add(this.checkBoxPlugin);
             this.groupBoxColumnas.Controls.Add(this.checkBoxXref);
             this.groupBoxColumnas.Controls.Add(this.checkBoxBid);
-            this.groupBoxColumnas.Controls.Add(this.checkBoxSolucion);
             this.groupBoxColumnas.Controls.Add(this.checkBoxExploit);
             this.groupBoxColumnas.Controls.Add(this.checkBoxProtocolo);
             this.groupBoxColumnas.Controls.Add(this.checkBoxPuerto);
@@ -189,124 +223,6 @@
             this.groupBoxColumnas.TabStop = false;
             this.groupBoxColumnas.Text = "Campos";
             // 
-            // checkBoxSolucion
-            // 
-            this.checkBoxSolucion.AutoSize = true;
-            this.checkBoxSolucion.Checked = true;
-            this.checkBoxSolucion.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxSolucion.Location = new System.Drawing.Point(15, 86);
-            this.checkBoxSolucion.Name = "checkBoxSolucion";
-            this.checkBoxSolucion.Size = new System.Drawing.Size(67, 17);
-            this.checkBoxSolucion.TabIndex = 10;
-            this.checkBoxSolucion.Text = "Solución";
-            this.checkBoxSolucion.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxExploit
-            // 
-            this.checkBoxExploit.AutoSize = true;
-            this.checkBoxExploit.Checked = true;
-            this.checkBoxExploit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxExploit.Location = new System.Drawing.Point(15, 155);
-            this.checkBoxExploit.Name = "checkBoxExploit";
-            this.checkBoxExploit.Size = new System.Drawing.Size(107, 17);
-            this.checkBoxExploit.TabIndex = 4;
-            this.checkBoxExploit.Text = "Exploit disponible";
-            this.checkBoxExploit.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxProtocolo
-            // 
-            this.checkBoxProtocolo.AutoSize = true;
-            this.checkBoxProtocolo.Checked = true;
-            this.checkBoxProtocolo.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxProtocolo.Location = new System.Drawing.Point(15, 132);
-            this.checkBoxProtocolo.Name = "checkBoxProtocolo";
-            this.checkBoxProtocolo.Size = new System.Drawing.Size(71, 17);
-            this.checkBoxProtocolo.TabIndex = 3;
-            this.checkBoxProtocolo.Text = "Protocolo";
-            this.checkBoxProtocolo.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxPuerto
-            // 
-            this.checkBoxPuerto.AutoSize = true;
-            this.checkBoxPuerto.Checked = true;
-            this.checkBoxPuerto.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxPuerto.Location = new System.Drawing.Point(15, 109);
-            this.checkBoxPuerto.Name = "checkBoxPuerto";
-            this.checkBoxPuerto.Size = new System.Drawing.Size(57, 17);
-            this.checkBoxPuerto.TabIndex = 2;
-            this.checkBoxPuerto.Text = "Puerto";
-            this.checkBoxPuerto.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxSinopsis
-            // 
-            this.checkBoxSinopsis.AutoSize = true;
-            this.checkBoxSinopsis.Checked = true;
-            this.checkBoxSinopsis.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxSinopsis.Location = new System.Drawing.Point(15, 63);
-            this.checkBoxSinopsis.Name = "checkBoxSinopsis";
-            this.checkBoxSinopsis.Size = new System.Drawing.Size(65, 17);
-            this.checkBoxSinopsis.TabIndex = 1;
-            this.checkBoxSinopsis.Text = "Sinopsis";
-            this.checkBoxSinopsis.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(3, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(262, 31);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Seleccionar los campos de las vulnerabilidades que se van a imprimir en el archiv" +
-    "o de salida.";
-            // 
-            // LabelMensaje
-            // 
-            this.LabelMensaje.AutoSize = true;
-            this.LabelMensaje.Location = new System.Drawing.Point(12, 10);
-            this.LabelMensaje.Name = "LabelMensaje";
-            this.LabelMensaje.Size = new System.Drawing.Size(365, 13);
-            this.LabelMensaje.TabIndex = 0;
-            this.LabelMensaje.Text = "Seleccionar un archivo nessus y oprimir el botón \"Ejecutar\" para procesarlo.";
-            // 
-            // checkBoxPlugin
-            // 
-            this.checkBoxPlugin.AutoSize = true;
-            this.checkBoxPlugin.Location = new System.Drawing.Point(15, 201);
-            this.checkBoxPlugin.Name = "checkBoxPlugin";
-            this.checkBoxPlugin.Size = new System.Drawing.Size(87, 17);
-            this.checkBoxPlugin.TabIndex = 13;
-            this.checkBoxPlugin.Text = "Plug-in name";
-            this.checkBoxPlugin.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxXref
-            // 
-            this.checkBoxXref.AutoSize = true;
-            this.checkBoxXref.Location = new System.Drawing.Point(15, 224);
-            this.checkBoxXref.Name = "checkBoxXref";
-            this.checkBoxXref.Size = new System.Drawing.Size(43, 17);
-            this.checkBoxXref.TabIndex = 12;
-            this.checkBoxXref.Text = "xref";
-            this.checkBoxXref.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxBid
-            // 
-            this.checkBoxBid.AutoSize = true;
-            this.checkBoxBid.Location = new System.Drawing.Point(15, 178);
-            this.checkBoxBid.Name = "checkBoxBid";
-            this.checkBoxBid.Size = new System.Drawing.Size(40, 17);
-            this.checkBoxBid.TabIndex = 11;
-            this.checkBoxBid.Text = "bid";
-            this.checkBoxBid.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxMac
-            // 
-            this.checkBoxMac.AutoSize = true;
-            this.checkBoxMac.Location = new System.Drawing.Point(15, 247);
-            this.checkBoxMac.Name = "checkBoxMac";
-            this.checkBoxMac.Size = new System.Drawing.Size(94, 17);
-            this.checkBoxMac.TabIndex = 15;
-            this.checkBoxMac.Text = "Dirección mac";
-            this.checkBoxMac.UseVisualStyleBackColor = true;
-            // 
             // checkBoxInfoAdicional
             // 
             this.checkBoxInfoAdicional.AutoSize = true;
@@ -316,6 +232,18 @@
             this.checkBoxInfoAdicional.TabIndex = 23;
             this.checkBoxInfoAdicional.Text = "Información adicional";
             this.checkBoxInfoAdicional.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxSolucion
+            // 
+            this.checkBoxSolucion.AutoSize = true;
+            this.checkBoxSolucion.Checked = true;
+            this.checkBoxSolucion.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSolucion.Location = new System.Drawing.Point(15, 107);
+            this.checkBoxSolucion.Name = "checkBoxSolucion";
+            this.checkBoxSolucion.Size = new System.Drawing.Size(67, 17);
+            this.checkBoxSolucion.TabIndex = 10;
+            this.checkBoxSolucion.Text = "Solución";
+            this.checkBoxSolucion.UseVisualStyleBackColor = true;
             // 
             // checkBoxOS
             // 
@@ -342,7 +270,8 @@
             this.checkBoxIP.AutoSize = true;
             this.checkBoxIP.Checked = true;
             this.checkBoxIP.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxIP.Location = new System.Drawing.Point(132, 84);
+            this.checkBoxIP.Enabled = false;
+            this.checkBoxIP.Location = new System.Drawing.Point(132, 63);
             this.checkBoxIP.Name = "checkBoxIP";
             this.checkBoxIP.Size = new System.Drawing.Size(84, 17);
             this.checkBoxIP.TabIndex = 20;
@@ -390,12 +319,130 @@
             this.checkBoxDescripcion.AutoSize = true;
             this.checkBoxDescripcion.Checked = true;
             this.checkBoxDescripcion.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDescripcion.Location = new System.Drawing.Point(132, 61);
+            this.checkBoxDescripcion.Location = new System.Drawing.Point(132, 86);
             this.checkBoxDescripcion.Name = "checkBoxDescripcion";
             this.checkBoxDescripcion.Size = new System.Drawing.Size(82, 17);
             this.checkBoxDescripcion.TabIndex = 16;
             this.checkBoxDescripcion.Text = "Descripción";
             this.checkBoxDescripcion.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxMac
+            // 
+            this.checkBoxMac.AutoSize = true;
+            this.checkBoxMac.Location = new System.Drawing.Point(15, 247);
+            this.checkBoxMac.Name = "checkBoxMac";
+            this.checkBoxMac.Size = new System.Drawing.Size(94, 17);
+            this.checkBoxMac.TabIndex = 15;
+            this.checkBoxMac.Text = "Dirección mac";
+            this.checkBoxMac.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxPlugin
+            // 
+            this.checkBoxPlugin.AutoSize = true;
+            this.checkBoxPlugin.Location = new System.Drawing.Point(15, 201);
+            this.checkBoxPlugin.Name = "checkBoxPlugin";
+            this.checkBoxPlugin.Size = new System.Drawing.Size(87, 17);
+            this.checkBoxPlugin.TabIndex = 13;
+            this.checkBoxPlugin.Text = "Plug-in name";
+            this.checkBoxPlugin.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxXref
+            // 
+            this.checkBoxXref.AutoSize = true;
+            this.checkBoxXref.Location = new System.Drawing.Point(15, 224);
+            this.checkBoxXref.Name = "checkBoxXref";
+            this.checkBoxXref.Size = new System.Drawing.Size(43, 17);
+            this.checkBoxXref.TabIndex = 12;
+            this.checkBoxXref.Text = "xref";
+            this.checkBoxXref.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxBid
+            // 
+            this.checkBoxBid.AutoSize = true;
+            this.checkBoxBid.Location = new System.Drawing.Point(15, 178);
+            this.checkBoxBid.Name = "checkBoxBid";
+            this.checkBoxBid.Size = new System.Drawing.Size(40, 17);
+            this.checkBoxBid.TabIndex = 11;
+            this.checkBoxBid.Text = "bid";
+            this.checkBoxBid.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxExploit
+            // 
+            this.checkBoxExploit.AutoSize = true;
+            this.checkBoxExploit.Checked = true;
+            this.checkBoxExploit.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxExploit.Location = new System.Drawing.Point(15, 155);
+            this.checkBoxExploit.Name = "checkBoxExploit";
+            this.checkBoxExploit.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxExploit.TabIndex = 4;
+            this.checkBoxExploit.Text = "Exploit disponible";
+            this.checkBoxExploit.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxProtocolo
+            // 
+            this.checkBoxProtocolo.AutoSize = true;
+            this.checkBoxProtocolo.Checked = true;
+            this.checkBoxProtocolo.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxProtocolo.Location = new System.Drawing.Point(15, 132);
+            this.checkBoxProtocolo.Name = "checkBoxProtocolo";
+            this.checkBoxProtocolo.Size = new System.Drawing.Size(71, 17);
+            this.checkBoxProtocolo.TabIndex = 3;
+            this.checkBoxProtocolo.Text = "Protocolo";
+            this.checkBoxProtocolo.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxPuerto
+            // 
+            this.checkBoxPuerto.AutoSize = true;
+            this.checkBoxPuerto.Checked = true;
+            this.checkBoxPuerto.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxPuerto.Enabled = false;
+            this.checkBoxPuerto.Location = new System.Drawing.Point(15, 86);
+            this.checkBoxPuerto.Name = "checkBoxPuerto";
+            this.checkBoxPuerto.Size = new System.Drawing.Size(57, 17);
+            this.checkBoxPuerto.TabIndex = 2;
+            this.checkBoxPuerto.Text = "Puerto";
+            this.checkBoxPuerto.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxSinopsis
+            // 
+            this.checkBoxSinopsis.AutoSize = true;
+            this.checkBoxSinopsis.Checked = true;
+            this.checkBoxSinopsis.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSinopsis.Cursor = System.Windows.Forms.Cursors.Default;
+            this.checkBoxSinopsis.Enabled = false;
+            this.checkBoxSinopsis.Location = new System.Drawing.Point(15, 63);
+            this.checkBoxSinopsis.Name = "checkBoxSinopsis";
+            this.checkBoxSinopsis.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxSinopsis.TabIndex = 1;
+            this.checkBoxSinopsis.Text = "Sinopsis";
+            this.checkBoxSinopsis.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(3, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(262, 31);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Seleccionar los campos de las vulnerabilidades que se van a imprimir en el archiv" +
+    "o de salida.";
+            // 
+            // LabelMensaje
+            // 
+            this.LabelMensaje.AutoSize = true;
+            this.LabelMensaje.Location = new System.Drawing.Point(12, 10);
+            this.LabelMensaje.Name = "LabelMensaje";
+            this.LabelMensaje.Size = new System.Drawing.Size(365, 13);
+            this.LabelMensaje.TabIndex = 0;
+            this.LabelMensaje.Text = "Seleccionar un archivo nessus y oprimir el botón \"Ejecutar\" para procesarlo.";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(359, 120);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(27, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = ".cvs";
             // 
             // Form1
             // 
@@ -452,6 +499,10 @@
         private System.Windows.Forms.CheckBox checkBoxPlugin;
         private System.Windows.Forms.CheckBox checkBoxXref;
         private System.Windows.Forms.CheckBox checkBoxBid;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBoxSalida;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label4;
     }
 }
 
