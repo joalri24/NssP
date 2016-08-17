@@ -92,10 +92,16 @@ namespace PruebaLectorNessus
         // Métodos
         // ----------------------------------------------------
 
+        /// <summary>
+        /// Abre una ventana de dialogo para seleccionar el archivo nessus. 
+        /// Si se selecciona un archivo, realiza los cambios correspondientes en 
+        /// la lógica del programa y en la interfaz gráfica.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>                  
         private void SeleccionarArchivo(object sender, EventArgs e)
         {
-            // Show the open File dialog. If the user clicks OK, load the
-            // file that the user chose.
+            // Abre el dialogo de selección de archivo
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 rutaArchivo = openFileDialog1.FileName;
@@ -109,7 +115,6 @@ namespace PruebaLectorNessus
             }
         }
  
-
         /// <summary>
         /// Lee el archivo línea por línea y extrae la información correspondiente.
         /// Crea un objeto de tipo reporte, un objeto de tipo Host por cada host del 
@@ -118,7 +123,6 @@ namespace PruebaLectorNessus
         /// <param name="fileName"></param>
         private void LeerArchivo(string fileName)
         {
-            //Console.WriteLine("Leyendo archivo...");
             LabelMensaje.Text = "Leyendo  archivo...";
             LabelMensaje.Refresh();
 
@@ -139,7 +143,6 @@ namespace PruebaLectorNessus
             while (!lineas[numLinea].Contains(REPORT_END_TAG))
             {
                 // Cuando encuentra un ReportHost, lee su información.
-
                 if (lineas[numLinea].Contains(REPORT_HOST_TAG))
                 {
                     Host host = new Host();
@@ -606,8 +609,7 @@ namespace PruebaLectorNessus
                 }
 
                 numLinea++;
-            }
-            //Console.WriteLine("Fin Lectura.");              
+            }              
         }
 
         /// <summary>
@@ -954,7 +956,6 @@ namespace PruebaLectorNessus
             string nombre = (textBoxSalida.Text == null || textBoxSalida.Text == "") ? reporte.nombre : textBoxSalida.Text;
             System.IO.File.WriteAllLines(nombre + ".cvs", lineas);
 
-            //Console.WriteLine("Archivo \""+reporte.nombre+".cvs\" creado.");
             LabelMensaje.Text = "Archivo \"" + nombre + ".cvs\" creado en la misma carpeta donde se encuentra este ejecutable.";
         }
 

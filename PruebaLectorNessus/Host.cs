@@ -9,7 +9,7 @@ namespace PruebaLectorNessus
     /// <summary>
     /// Representa un host escaneado por nessus. Contiene un hostname, una dirección ip,
     /// el o los sistemas operativos, la o las direcciones mac, el netbios name,  la fecha de inicio 
-    /// del escaneo y la fecha de final. 
+    /// del escaneo y la fecha de final. Tiene asociada una lista de vulnerabilidades.
     /// </summary>
     class Host
     {
@@ -35,13 +35,6 @@ namespace PruebaLectorNessus
         {
             vulnerabilidades = new List<Vulnerabilidad>();
         }
-
-
-        // ----------------------------------------------------
-        // Métodos
-        // ----------------------------------------------------
-
-
     }
 }
 
