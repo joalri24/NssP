@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.splitContainerFondo = new System.Windows.Forms.SplitContainer();
             this.splitContainerOpciones = new System.Windows.Forms.SplitContainer();
@@ -450,6 +451,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(721, 342);
             this.Controls.Add(this.splitContainerFondo);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Parser Nessus";
             this.splitContainerFondo.Panel1.ResumeLayout(false);

@@ -309,17 +309,7 @@ namespace PruebaLectorNessus
                     host.hostIp = hostIp;
                     host.mac = mac;
                     host.netbiosName = netbiosName;
-                    reporte.hosts.Add(host);
-
-                    // Imprimir la información en la consola. 
-                    //Console.WriteLine("Línea: " + numLinea + " --- hostname:" + hostname + " ---");
-                    //Console.WriteLine("Línea: " + numLinea + " HOST_END: " + hostEnd);
-                    //Console.WriteLine("Línea: " + numLinea + " HOST_START: " + hostStart);
-                    //Console.WriteLine("Línea: " + numLinea + " OS: " + operativeSystem);
-                    //Console.WriteLine("Línea: " + numLinea + " HOST_IP: " + hostIp);
-                    //Console.WriteLine("Línea: " + numLinea + " MAC: " + mac);
-                    //Console.WriteLine("Línea: " + numLinea + " NETBIOS_NAME: " + netbiosName);
-                    //Console.WriteLine("Linea: " + numLinea + " "+ lineas[numLinea]);      
+                    reporte.hosts.Add(host);     
 
                     // Iterar hasta que encuentra un tag de fin del host.
                     while (!lineas[numLinea].Contains(REPORT_HOST_END_TAG))
@@ -609,22 +599,6 @@ namespace PruebaLectorNessus
                                 // Agregar la vulnerabilidad a la lista de vulnerabilidades del host.
                                 host.vulnerabilidades.Add(vulnerabilidad);
 
-                                /*
-                                Console.WriteLine("--");
-                                Console.WriteLine("Descripción: " + descripcion);
-                                Console.WriteLine("Puerto: " + puerto);
-                                Console.WriteLine("Protocolo: " + protocolo);
-                                Console.WriteLine("Severidad: " + severidad);
-                                Console.WriteLine("Bid: " + bid);
-                                Console.WriteLine("Cve: " + cve);
-                                Console.WriteLine("Exploit available: " + exploitAvailable);
-                                Console.WriteLine("Cvss temporal score: " + cvssTemporalScore);
-                                Console.WriteLine("Risk factor: " + riskFactor);
-                                Console.WriteLine("Plugin name: " + pluginName);
-                                Console.WriteLine("Sinopsis: " + sinopsis);
-                                Console.WriteLine("Solución: " + solucion);
-                                Console.WriteLine("See also: " + seeAlso);
-                                Console.WriteLine("XREF: " + xref); */
                             }
                         }
                         numLinea++;
@@ -984,12 +958,15 @@ namespace PruebaLectorNessus
             LabelMensaje.Text = "Archivo \"" + nombre + ".cvs\" creado en la misma carpeta donde se encuentra este ejecutable.";
         }
 
+        /// <summary>
+        /// Lee el archivo nessus, procesa la información y genera un archivo de salida.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonEjecutar_Click(object sender, EventArgs e)
         {
             reporte = new Reporte();
             LeerArchivo(rutaArchivo);
-            //ImprimirReporteHosts();
-            //ImprimirVulnerabilidades();
             EscribirArchivo();
         }
     }
