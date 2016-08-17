@@ -814,7 +814,7 @@ namespace PruebaLectorNessus
                     if (checkBoxSinopsis.Checked)
                     {
                         temp = vulnerabilidad.sinopsis.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
-                        fila.Append(temp);
+                        fila.Append(temp.TrimStart('-'));
                         fila.Append(SEPARADOR);
                     }
 
@@ -822,7 +822,7 @@ namespace PruebaLectorNessus
                     if (checkBoxDescripcion.Checked)
                     {
                         temp = vulnerabilidad.descripcion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
-                        fila.Append(temp);
+                        fila.Append(temp.TrimStart('-'));
                         fila.Append(SEPARADOR);
                     }
 
@@ -830,7 +830,7 @@ namespace PruebaLectorNessus
                     if (checkBoxSolucion.Checked)
                     {
                         temp = vulnerabilidad.solucion.Replace(SEPARADOR, '.');  // Limpia el campo para que no tenga el caracter separador.
-                        fila.Append(temp);
+                        fila.Append(temp.TrimStart('-'));
                         fila.Append(SEPARADOR);
                     }
 

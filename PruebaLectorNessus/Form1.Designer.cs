@@ -33,6 +33,7 @@
             this.splitContainerFondo = new System.Windows.Forms.SplitContainer();
             this.splitContainerOpciones = new System.Windows.Forms.SplitContainer();
             this.groupBoxArchivo = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxSalida = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -60,7 +61,6 @@
             this.checkBoxSinopsis = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.LabelMensaje = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFondo)).BeginInit();
             this.splitContainerFondo.Panel1.SuspendLayout();
             this.splitContainerFondo.Panel2.SuspendLayout();
@@ -130,6 +130,15 @@
             this.groupBoxArchivo.TabIndex = 0;
             this.groupBoxArchivo.TabStop = false;
             this.groupBoxArchivo.Text = "Archivo";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(359, 120);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(27, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = ".cvs";
             // 
             // label3
             // 
@@ -435,15 +444,6 @@
             this.LabelMensaje.Size = new System.Drawing.Size(365, 13);
             this.LabelMensaje.TabIndex = 0;
             this.LabelMensaje.Text = "Seleccionar un archivo nessus y oprimir el botón \"Ejecutar\" para procesarlo.";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(359, 120);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(27, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = ".cvs";
             // 
             // Form1
             // 
